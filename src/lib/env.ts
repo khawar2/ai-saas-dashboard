@@ -15,5 +15,5 @@ export const appConfig = {
   aiProviderModel: process.env.AI_PROVIDER_MODEL ?? process.env.OPENAI_MODEL ?? "gpt-4o-mini",
   openAiApiKey: process.env.OPENAI_API_KEY,
   stripeProPriceId: process.env.STRIPE_PRO_PRICE_ID,
-  uploadStorageDir: process.env.UPLOAD_STORAGE_DIR ?? ".storage/uploads",
+  uploadStorageDir: process.env.UPLOAD_STORAGE_DIR ?? (process.env.VERCEL ? "/tmp/ai-saas-uploads" : ".storage/uploads"),
 };

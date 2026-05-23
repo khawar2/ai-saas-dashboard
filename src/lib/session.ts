@@ -26,7 +26,7 @@ function getAuthSecret() {
     throw new Error("Missing required environment variable: AUTH_SECRET");
   }
 
-  if (secret.length < 32 || secret.includes("replace-with")) {
+  if (secret.length < 32 || secret.includes("replace-with") || secret.includes("generate-a-random")) {
     throw new Error("AUTH_SECRET must be a strong random value with at least 32 characters");
   }
 
