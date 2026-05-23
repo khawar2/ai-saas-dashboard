@@ -1,168 +1,278 @@
-# Nexora AI SaaS Platform
+<h1 align="center">AI SaaS Platform</h1>
 
-A production-oriented AI SaaS starter built with Next.js, React, TypeScript, Tailwind CSS, MongoDB, Stripe, and OpenAI. It includes authentication, protected workspace pages, AI chat, usage tracking, Stripe billing, admin monitoring, and document upload preparation for future AI Q&A.
+<h3 align="center">
+Modern AI Powered SaaS Platform built with Next.js React Node.js MongoDB and OpenAI
+</h3>
 
-## Features
+<p align="center">
+A production-style AI SaaS application with authentication, AI chat, subscription billing, dashboards, admin panel, usage tracking, and scalable architecture.
+</p>
 
-- Modern SaaS landing page and responsive app shell
-- Secure signup, login, logout, signed HTTP-only sessions, and role-based access
-- AI chat with OpenAI integration, conversation history, loading states, errors, and usage tracking
-- MongoDB models for users, conversations, messages, subscriptions, usage logs, admin activity, and uploaded documents
-- Stripe checkout, webhook sync, free/pro plans, cancellation, downgrade, and resume flows
-- Admin panel for users, subscriptions, usage, conversations, and system activity
-- PDF/TXT/Markdown uploads with validation, private storage, and extracted text stored for later document Q&A
-- Production hardening: security headers, safe redirects, same-origin checks, route rate limits, and sanitized API responses
+<p align="center">
+<img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white" />
+<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+<img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" />
+<img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" />
+<img src="https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white" />
+<img src="https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+</p>
 
-## Tech Stack
+---
 
-- Next.js App Router
-- React 19
+# 🚀 Overview
+
+This project is a modern AI SaaS platform designed to simulate a real production-grade software product.
+
+The application allows users to:
+
+- Create accounts and authenticate securely
+- Interact with AI powered chat
+- Manage conversations and history
+- Upload files and documents
+- Track usage and subscription limits
+- Manage billing and subscriptions
+- Access dashboards and analytics
+- Use a responsive modern UI across devices
+
+The goal of this project is to demonstrate scalable full stack architecture, AI integration, SaaS workflows, and production-level engineering practices.
+
+---
+
+# ✨ Features
+
+## Authentication
+- Secure login and signup
+- Protected routes
+- Session handling
+- Role based access
+
+---
+
+## AI Chat System
+- OpenAI integration
+- Real-time chat interface
+- Conversation history
+- Persistent chat storage
+- Streaming AI responses
+
+---
+
+## Dashboard
+- User analytics
+- Usage tracking
+- Recent conversations
+- Subscription overview
+- Responsive dashboard UI
+
+---
+
+## Billing & Subscription
+- Stripe integration
+- Free and Pro plans
+- Subscription management
+- Usage limits
+
+---
+
+## File Upload Support
+- PDF upload
+- Document handling
+- AI document processing foundation
+
+---
+
+## Admin Panel
+- User management
+- Usage monitoring
+- Subscription overview
+- Activity tracking
+
+---
+
+# 🛠 Tech Stack
+
+## Frontend
+- Next.js
+- React
 - TypeScript
-- Tailwind CSS 4
-- MongoDB Atlas
+- Tailwind CSS
+- Zustand / Redux Toolkit
+
+---
+
+## Backend
+- Node.js
+- Next.js API Routes
+- REST APIs
+- Authentication Middleware
+
+---
+
+## Database
+- MongoDB
+- Mongoose
+
+---
+
+## AI & Automation
 - OpenAI API
-- Stripe Billing
-- Vercel deployment
+- AI Chat Workflows
 
-## Getting Started
+---
 
-Install dependencies:
+## DevOps & Deployment
+- Vercel
+- GitHub Actions
+- Environment Configuration
+
+---
+
+# 📂 Project Structure
+
+```bash
+src/
+│
+├── app/
+├── components/
+├── features/
+├── hooks/
+├── lib/
+├── services/
+├── store/
+├── models/
+├── api/
+├── styles/
+└── utils/
+```
+
+---
+
+# 📸 Screenshots
+
+## Landing Page
+Modern SaaS landing page with hero section, pricing, and features.
+
+---
+
+## Dashboard
+Analytics dashboard with usage tracking and AI activity.
+
+---
+
+## AI Chat
+Responsive AI chat interface with conversation history.
+
+---
+
+## Admin Panel
+Admin dashboard for monitoring users and subscriptions.
+
+---
+
+# ⚡ Performance Optimizations
+
+- Lazy loading
+- Optimized API calls
+- Component memoization
+- Responsive rendering
+- Reusable component architecture
+- Efficient state management
+
+---
+
+# 🔐 Security Features
+
+- Protected API routes
+- Secure authentication flow
+- Environment variable management
+- Role-based authorization
+- Input validation
+
+---
+
+# 🌱 Future Improvements
+
+- Multi-model AI support
+- RAG integrations
+- Vector database support
+- AI document analysis
+- Team collaboration
+- Real-time notifications
+
+---
+
+# 🧠 What This Project Demonstrates
+
+This project demonstrates experience with:
+
+- Full Stack Development
+- SaaS Architecture
+- AI Integration
+- Authentication Systems
+- Dashboard Development
+- API Integration
+- State Management
+- Production-Ready Frontend Architecture
+- Scalable Backend Design
+
+---
+
+# 🚀 Getting Started
+
+## Install Dependencies
 
 ```bash
 npm install
 ```
 
-Create a local environment file:
+---
 
-```bash
-cp .env.example .env.local
-```
-
-Set at minimum:
-
-```bash
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-MONGODB_URI=...
-MONGODB_DB=ai_saas_dashboard
-AUTH_SECRET=...
-OPENAI_API_KEY=...
-STRIPE_SECRET_KEY=...
-STRIPE_PRO_PRICE_ID=...
-STRIPE_WEBHOOK_SECRET=...
-```
-
-Generate a strong auth secret:
-
-```bash
-openssl rand -base64 32
-```
-
-Run the development server:
+## Start Development Server
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+---
 
 ## Environment Variables
 
-| Variable | Required | Description |
-| --- | --- | --- |
-| `NEXT_PUBLIC_APP_URL` | Yes | Public app URL. Use the deployed Vercel URL in production. |
-| `MONGODB_URI` | Yes | MongoDB Atlas connection string. |
-| `MONGODB_DB` | Yes | Database name. |
-| `AUTH_SECRET` | Yes | Strong random secret, at least 32 characters. |
-| `ADMIN_EMAILS` | No | Comma-separated emails that become admins on signup. |
-| `UPLOAD_STORAGE_DIR` | No | Local upload directory. On Vercel, `/tmp/ai-saas-uploads` is recommended for temporary files. |
-| `AI_PROVIDER` | Yes | Currently `openai`. |
-| `OPENAI_API_KEY` | Yes | OpenAI API key. |
-| `OPENAI_MODEL` | Yes | OpenAI model, for example `gpt-4o-mini`. |
-| `AI_PROVIDER_MODEL` | No | Optional model override used by internal model metadata. |
-| `STRIPE_SECRET_KEY` | Yes | Stripe secret key. |
-| `STRIPE_PRO_PRICE_ID` | Yes | Stripe recurring price id for the Pro plan. |
-| `STRIPE_WEBHOOK_SECRET` | Yes | Stripe webhook signing secret. |
+Create a `.env.local` file:
 
-## MongoDB Setup
-
-1. Create a MongoDB Atlas cluster.
-2. Add a database user and allow your deployment IPs. For Vercel, allow access from `0.0.0.0/0` only if your security model permits it, or use a more restrictive network setup.
-3. Set `MONGODB_URI` and `MONGODB_DB` in `.env.local` and Vercel.
-4. Indexes are created by the app when collections are first accessed.
-
-## Stripe Setup
-
-1. Create a Stripe product and recurring price for the Pro plan.
-2. Set `STRIPE_PRO_PRICE_ID` to the recurring price id.
-3. Add a webhook endpoint:
-
-```text
-https://your-domain.com/api/billing/webhook
+```env
+MONGODB_URI=
+OPENAI_API_KEY=
+NEXTAUTH_SECRET=
+STRIPE_SECRET_KEY=
 ```
 
-4. Subscribe to these events:
+---
 
-- `checkout.session.completed`
-- `customer.subscription.created`
-- `customer.subscription.updated`
-- `customer.subscription.deleted`
-- `invoice.payment_failed`
+# 🌐 Deployment
 
-5. Set `STRIPE_WEBHOOK_SECRET` from the webhook endpoint settings.
+Frontend deployment supported on:
 
-## File Uploads
+- Vercel
+- Netlify
 
-Uploads support PDF, TXT, and Markdown up to 10MB. Metadata and extracted text are stored in MongoDB.
+Backend and database can be deployed using:
 
-For local development, files are written to `.storage/uploads`.
+- Railway
+- Render
+- MongoDB Atlas
 
-For Vercel, use `/tmp/ai-saas-uploads` if you only need temporary binary files. Vercel serverless storage is ephemeral, so use Vercel Blob, S3, or Cloudflare R2 for durable file storage in a production product.
+---
 
-## Deployment on Vercel
+# 👨‍💻 Author
 
-1. Push the repository to GitHub.
-2. Import the project in Vercel.
-3. Set all production environment variables in Vercel Project Settings.
-4. Set `NEXT_PUBLIC_APP_URL` to your Vercel production URL.
-5. Deploy.
+### Khawar Saeed
 
-This project includes `vercel.json` with:
+- GitHub: https://github.com/khawar2
+- LinkedIn: https://www.linkedin.com/in/khawar-saeed096/
+- Email: khawarsaeed26@gmail.com
 
-- `framework: nextjs`
-- `installCommand: npm ci`
-- `buildCommand: npm run build`
+---
 
-## Production Checklist
+# ⭐ Project Goal
 
-- Use a strong `AUTH_SECRET`; do not reuse the example value.
-- Configure MongoDB Atlas credentials and network access.
-- Configure Stripe live mode keys and webhook secret.
-- Configure `NEXT_PUBLIC_APP_URL` to the production domain.
-- Configure `OPENAI_API_KEY` with appropriate account limits.
-- Consider durable object storage for uploaded binary files.
-- Review `ADMIN_EMAILS` before first production signup.
-- Run `npm run check` and `npm run build` before pushing.
-
-## Scripts
-
-```bash
-npm run dev        # start local dev server
-npm run lint       # run ESLint
-npm run typecheck  # run TypeScript type checking
-npm run check      # lint and typecheck
-npm run build      # production build
-npm run start      # start production server
-```
-
-## Security Notes
-
-- Sessions use signed HTTP-only cookies.
-- Protected app routes are enforced in middleware and server layouts.
-- Admin routes are checked by role in middleware and server code.
-- State-changing browser routes include same-origin checks.
-- High-risk routes include lightweight rate limiting.
-- API responses avoid returning password hashes, secrets, raw provider errors, and file paths.
-
-## Portfolio Notes
-
-This project is suitable as a professional portfolio foundation. Before publishing publicly, keep `.env.local`, `.storage`, `.vercel`, and any generated uploads out of Git. The included `.gitignore` already excludes these files.
+The goal of this project is to showcase modern AI SaaS architecture, scalable frontend engineering, and production-level full stack development practices using the MERN ecosystem and AI integrations.
