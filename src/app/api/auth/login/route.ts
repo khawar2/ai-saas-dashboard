@@ -1,14 +1,17 @@
 ﻿import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { createSessionToken, verifyPassword } from "@/lib/auth";
-import { getDatabase } from "@/lib/mongodb";
+import { verifyPassword } from "@/lib/auth";
+import { createSessionToken, normalizeRole, SESSION_COOKIE_NAME, SESSION_MAX_AGE_SECONDS } from "@/lib/session";
+import { logAdminActivity } from "@/models/admin-activity";
+import { findUserByEmail, markUserLogin } from "@/models/users";
 
 export const runtime = "nodejs";
 
 const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(1),
+  next: z.string().optional(),
 });
 
 async function readRequestBody(request: Request) {
@@ -22,6 +25,16 @@ async function readRequestBody(request: Request) {
   return Object.fromEntries(formData.entries());
 }
 
+function getSafeRedirectUrl(request: Request, next?: string) {
+  const fallback = new URL("/dashboard", request.url);
+
+  if (!next || !next.startsWith("/") || next.startsWith("//")) {
+    return fallback;
+  }
+
+  return new URL(next, request.url);
+}
+
 export async function POST(request: Request) {
   const parsed = loginSchema.safeParse(await readRequestBody(request));
 
@@ -29,21 +42,36 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid credentials." }, { status: 400 });
   }
 
-  const db = await getDatabase();
-  const user = await db.collection("users").findOne<{ _id: object; passwordHash: string; role?: "owner" | "admin" | "member" }>({
-    email: parsed.data.email.toLowerCase(),
-  });
+  const user = await findUserByEmail(parsed.data.email);
 
   if (!user || !(await verifyPassword(parsed.data.password, user.passwordHash))) {
     return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
   }
 
-  const response = NextResponse.redirect(new URL("/dashboard", request.url));
-  response.cookies.set("session", createSessionToken({ userId: String(user._id), role: user.role ?? "member" }), {
+  await markUserLogin(user._id);
+
+  if (normalizeRole(user.role) === "admin") {
+    await logAdminActivity({
+      actorUserId: user._id,
+      actorEmail: user.email,
+      action: "admin.login",
+      targetType: "user",
+      targetId: user._id,
+    });
+  }
+
+  const response = NextResponse.redirect(getSafeRedirectUrl(request, parsed.data.next), 303);
+  response.cookies.set(SESSION_COOKIE_NAME, await createSessionToken({
+    id: String(user._id),
+    name: user.name,
+    email: user.email,
+    role: normalizeRole(user.role),
+  }), {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
     path: "/",
+    maxAge: SESSION_MAX_AGE_SECONDS,
   });
 
   return response;

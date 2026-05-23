@@ -3,6 +3,7 @@
 const navItems = [
   { href: "#features", label: "Features" },
   { href: "#pricing", label: "Pricing" },
+  { href: "#security", label: "Security" },
   { href: "/login", label: "Login" },
 ];
 
@@ -23,12 +24,17 @@ export function SiteHeader() {
             </Link>
           ))}
         </div>
-        <Link
-          href="/register"
-          className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-sky-100"
-        >
-          Get started
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link href="/login" className="hidden text-sm font-medium text-slate-300 hover:text-white sm:block">
+            Sign in
+          </Link>
+          <Link
+            href="/signup"
+            className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-sky-100"
+          >
+            Get started
+          </Link>
+        </div>
       </nav>
     </header>
   );
