@@ -1,28 +1,11 @@
 ﻿import { redirect } from "next/navigation";
 
 import { Card } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
+import { StatusPill } from "@/components/ui/status-pill";
 import { getCurrentUser } from "@/lib/current-user";
+import { formatDate, formatNumber } from "@/lib/format";
 import { getAdminDashboardData } from "@/models/admin-dashboard";
-
-function formatNumber(value: number) {
-  return new Intl.NumberFormat("en", {
-    notation: value >= 1000000 ? "compact" : "standard",
-  }).format(value);
-}
-
-function formatDate(date?: Date) {
-  return date
-    ? new Intl.DateTimeFormat("en", { dateStyle: "medium", timeStyle: "short" }).format(date)
-    : "Never";
-}
-
-function StatusPill({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="inline-flex w-fit rounded-full bg-white/10 px-3 py-1 text-xs font-semibold capitalize text-sky-200">
-      {children}
-    </span>
-  );
-}
 
 export default async function AdminPage() {
   const user = await getCurrentUser();
@@ -85,10 +68,10 @@ export default async function AdminPage() {
               <span className="capitalize">{row.plan} · {row.subscriptionStatus}</span>
               <span>{formatNumber(row.messagesThisMonth)}</span>
               <span>{formatNumber(row.tokensThisMonth)}</span>
-              <span>{formatDate(row.lastLoginAt)}</span>
+              <span>{formatDate(row.lastLoginAt, "Never")}</span>
             </div>
           ))}
-          {data.users.length === 0 ? <div className="p-5 text-sm text-slate-400">No users found.</div> : null}
+          {data.users.length === 0 ? <EmptyState title="No users found" description="New users will appear here after signup." /> : null}
         </div>
       </Card>
 
@@ -118,7 +101,7 @@ export default async function AdminPage() {
                 <span>{formatDate(subscription.currentPeriodEnd)}</span>
               </div>
             ))}
-            {data.subscriptions.length === 0 ? <div className="p-5 text-sm text-slate-400">No subscriptions found.</div> : null}
+            {data.subscriptions.length === 0 ? <EmptyState title="No subscriptions found" description="Subscription records are created during signup or checkout." /> : null}
           </div>
         </Card>
 
@@ -147,10 +130,10 @@ export default async function AdminPage() {
                 </span>
                 <span>{conversation.model}</span>
                 <span>{formatNumber(conversation.messageCount)}</span>
-                <span>{formatDate(conversation.lastMessageAt)}</span>
+                <span>{formatDate(conversation.lastMessageAt, "Never")}</span>
               </div>
             ))}
-            {data.conversations.length === 0 ? <div className="p-5 text-sm text-slate-400">No conversations found.</div> : null}
+            {data.conversations.length === 0 ? <EmptyState title="No conversations found" description="AI chat conversations will appear here after users send messages." /> : null}
           </div>
         </Card>
       </div>
@@ -175,7 +158,7 @@ export default async function AdminPage() {
               <span>{formatDate(activity.createdAt)}</span>
             </div>
           ))}
-          {data.activity.length === 0 ? <div className="p-5 text-sm text-slate-400">No system activity found.</div> : null}
+          {data.activity.length === 0 ? <EmptyState title="No system activity found" description="Admin and billing events will appear here for audit review." /> : null}
         </div>
       </Card>
     </section>

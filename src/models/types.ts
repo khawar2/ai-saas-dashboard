@@ -100,6 +100,24 @@ export type UsageLogDocument = TimestampedDocument & {
   metadata?: Record<string, unknown>;
 };
 
+export type UploadedDocumentStatus = "ready" | "processing" | "failed";
+
+export type UploadedDocumentDocument = TimestampedDocument & {
+  _id: ObjectId;
+  userId: ObjectId;
+  originalName: string;
+  storedName: string;
+  storagePath: string;
+  mimeType: string;
+  sizeBytes: number;
+  sha256: string;
+  status: UploadedDocumentStatus;
+  extractedText: string;
+  textPreview: string;
+  pageCount?: number;
+  error?: string;
+};
+
 export type AdminActivityDocument = TimestampedDocument & {
   _id: ObjectId;
   actorUserId?: ObjectId;

@@ -8,6 +8,7 @@ import type { SessionUser } from "@/lib/session";
 const titles: Record<string, string> = {
   "/dashboard": "Dashboard",
   "/chat": "AI Chat",
+  "/documents": "Documents",
   "/billing": "Billing",
   "/admin": "Admin",
   "/settings": "Settings",

@@ -6,6 +6,7 @@ import type {
   ConversationDocument,
   MessageDocument,
   SubscriptionDocument,
+  UploadedDocumentDocument,
   UsageLogDocument,
   UserDocument,
 } from "@/models/types";
@@ -14,6 +15,7 @@ type AppCollections = {
   users: Collection<UserDocument>;
   conversations: Collection<ConversationDocument>;
   messages: Collection<MessageDocument>;
+  uploadedDocuments: Collection<UploadedDocumentDocument>;
   subscriptions: Collection<SubscriptionDocument>;
   usageLogs: Collection<UsageLogDocument>;
   adminActivity: Collection<AdminActivityDocument>;
@@ -31,6 +33,10 @@ async function ensureIndexes(collections: AppCollections) {
 
     collections.messages.createIndex({ conversationId: 1, createdAt: 1 }),
     collections.messages.createIndex({ userId: 1, createdAt: -1 }),
+
+    collections.uploadedDocuments.createIndex({ userId: 1, createdAt: -1 }),
+    collections.uploadedDocuments.createIndex({ userId: 1, sha256: 1 }),
+    collections.uploadedDocuments.createIndex({ status: 1, createdAt: -1 }),
 
     collections.subscriptions.createIndex({ userId: 1 }, { unique: true }),
     collections.subscriptions.createIndex({ status: 1, currentPeriodEnd: 1 }),
@@ -53,6 +59,7 @@ export async function getCollections() {
     users: db.collection<UserDocument>("users"),
     conversations: db.collection<ConversationDocument>("conversations"),
     messages: db.collection<MessageDocument>("messages"),
+    uploadedDocuments: db.collection<UploadedDocumentDocument>("uploaded_documents"),
     subscriptions: db.collection<SubscriptionDocument>("subscriptions"),
     usageLogs: db.collection<UsageLogDocument>("usage_logs"),
     adminActivity: db.collection<AdminActivityDocument>("admin_activity"),

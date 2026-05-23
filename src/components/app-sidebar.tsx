@@ -9,6 +9,7 @@ import type { SessionUser } from "@/lib/session";
 const navigation = [
   { href: "/dashboard", label: "Dashboard", icon: "D" },
   { href: "/chat", label: "AI Chat", icon: "C" },
+  { href: "/documents", label: "Documents", icon: "F" },
   { href: "/billing", label: "Billing", icon: "B" },
   { href: "/admin", label: "Admin", icon: "A", adminOnly: true },
   { href: "/settings", label: "Settings", icon: "S" },
@@ -63,7 +64,7 @@ export function MobileAppNav({ user }: { user: SessionUser }) {
 
   return (
     <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-white/10 bg-slate-950/90 px-2 py-2 backdrop-blur-xl lg:hidden">
-      <div className={cn("grid gap-1", visibleNavigation.length === 5 ? "grid-cols-5" : "grid-cols-4")}>
+      <div className="flex gap-1 overflow-x-auto pb-1">
         {visibleNavigation.map((item) => {
           const active = pathname === item.href;
           return (
@@ -71,7 +72,7 @@ export function MobileAppNav({ user }: { user: SessionUser }) {
               key={item.href}
               href={item.href}
               className={cn(
-                "rounded-2xl px-2 py-2 text-center text-[11px] font-medium text-slate-400 transition hover:text-white",
+                "min-w-20 flex-1 rounded-2xl px-2 py-2 text-center text-[11px] font-medium text-slate-400 transition hover:text-white",
                 active && "bg-sky-400 text-slate-950 hover:text-slate-950",
               )}
             >

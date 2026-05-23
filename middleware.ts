@@ -2,7 +2,7 @@
 
 import { readSessionToken, SESSION_COOKIE_NAME } from "@/lib/session";
 
-const protectedRoutes = ["/dashboard", "/chat", "/billing", "/admin", "/settings"];
+const protectedRoutes = ["/dashboard", "/chat", "/documents", "/billing", "/admin", "/settings"];
 const authRoutes = ["/login", "/register", "/signup"];
 
 function getSafeRedirectPath(pathname: string) {
@@ -39,6 +39,7 @@ export const config = {
   matcher: [
     "/dashboard/:path*",
     "/chat/:path*",
+    "/documents/:path*",
     "/billing/:path*",
     "/admin/:path*",
     "/settings/:path*",

@@ -1,6 +1,11 @@
-﻿import { StatCard } from "@/components/stat-card";
+﻿import Link from "next/link";
+
+import { StatCard } from "@/components/stat-card";
+import { Alert } from "@/components/ui/alert";
 import { Card } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import { getCurrentUser } from "@/lib/current-user";
+import { formatCurrency, formatNumber } from "@/lib/format";
 import { getActiveSubscription } from "@/models/subscriptions";
 import { getUsageSummary } from "@/models/usage";
 import { findUserById } from "@/models/users";
@@ -11,14 +16,6 @@ const activity = [
   { title: "Admin review needed", detail: "2 invited users have not accepted", tone: "text-amber-300" },
   { title: "Provider config", detail: "AI provider route is ready for secrets", tone: "text-violet-300" },
 ];
-
-function formatNumber(value: number) {
-  return new Intl.NumberFormat("en", { notation: value >= 1000000 ? "compact" : "standard" }).format(value);
-}
-
-function formatCurrency(value: number) {
-  return new Intl.NumberFormat("en", { currency: "USD", style: "currency" }).format(value);
-}
 
 export default async function DashboardPage() {
   const sessionUser = await getCurrentUser();
@@ -46,16 +43,14 @@ export default async function DashboardPage() {
         <Card className="p-6">
           <p className="text-sm text-slate-400">Current plan</p>
           <p className="mt-3 text-3xl font-semibold capitalize text-white">{planName}</p>
-          <div className="mt-5 h-2 rounded-full bg-white/10">
-            <div className="h-2 rounded-full bg-sky-400" style={{ width: `${tokenPercent}%` }} />
-          </div>
+          <Progress value={tokenPercent} className="mt-5 h-2" />
           <p className="mt-3 text-sm text-slate-400">
             {formatNumber(usage?.monthly.totalTokens ?? 0)} of {formatNumber(usage?.limits.monthlyTokens ?? 0)} monthly tokens used
           </p>
         </Card>
       </div>
       {usage?.limitReached ? (
-        <Card className="border-amber-300/30 bg-amber-400/10 p-5">
+        <Alert variant="warning" className="p-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="font-semibold text-amber-100">Plan limit reached</p>
@@ -63,11 +58,11 @@ export default async function DashboardPage() {
                 Upgrade your plan to continue sending AI messages this month.
               </p>
             </div>
-            <a href="/billing" className="rounded-full bg-amber-200 px-5 py-3 text-center text-sm font-semibold text-slate-950 transition hover:bg-amber-100">
+            <Link href="/billing" className="rounded-full bg-amber-200 px-5 py-3 text-center text-sm font-semibold text-slate-950 transition hover:bg-amber-100">
               Upgrade plan
-            </a>
+            </Link>
           </div>
-        </Card>
+        </Alert>
       ) : null}
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard
@@ -100,9 +95,7 @@ export default async function DashboardPage() {
                 <span className="text-slate-300">Monthly messages</span>
                 <span className="text-slate-400">{messagePercent}% used</span>
               </div>
-              <div className="mt-3 h-3 rounded-full bg-white/10">
-                <div className="h-3 rounded-full bg-sky-400" style={{ width: `${messagePercent}%` }} />
-              </div>
+              <Progress value={messagePercent} className="mt-3" />
               <p className="mt-2 text-sm text-slate-500">
                 {formatNumber(usage?.monthly.totalMessages ?? 0)} / {formatNumber(usage?.limits.monthlyMessages ?? 0)} messages
               </p>
@@ -112,9 +105,7 @@ export default async function DashboardPage() {
                 <span className="text-slate-300">Monthly tokens</span>
                 <span className="text-slate-400">{tokenPercent}% used</span>
               </div>
-              <div className="mt-3 h-3 rounded-full bg-white/10">
-                <div className="h-3 rounded-full bg-emerald-400" style={{ width: `${tokenPercent}%` }} />
-              </div>
+              <Progress value={tokenPercent} color="emerald" className="mt-3" />
               <p className="mt-2 text-sm text-slate-500">
                 {formatNumber(usage?.monthly.totalTokens ?? 0)} / {formatNumber(usage?.limits.monthlyTokens ?? 0)} tokens
               </p>

@@ -3,7 +3,9 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Alert } from "@/components/ui/alert";
 import { Card } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
 
 type Conversation = {
   id: string;
@@ -217,7 +219,7 @@ export function ChatInterface() {
         </div>
 
         {error ? (
-          <div className="mt-4 rounded-2xl border border-red-400/20 bg-red-500/10 px-4 py-3 text-sm text-red-100">
+          <Alert variant="error" className="mt-4">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <span>{error}</span>
               {upgradeHref ? (
@@ -229,7 +231,7 @@ export function ChatInterface() {
                 </a>
               ) : null}
             </div>
-          </div>
+          </Alert>
         ) : null}
 
         <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto py-6">
@@ -238,14 +240,11 @@ export function ChatInterface() {
           ) : null}
 
           {!isLoadingMessages && messages.length === 0 ? (
-            <div className="grid h-full min-h-72 place-items-center text-center">
-              <div>
-                <p className="text-2xl font-semibold text-white">Ask your AI assistant anything.</p>
-                <p className="mt-3 max-w-md text-sm leading-6 text-slate-400">
-                  Start a new conversation or continue a previous one from the history panel.
-                </p>
-              </div>
-            </div>
+            <EmptyState
+              title="Ask your AI assistant anything"
+              description="Start a new conversation or continue a previous one from the history panel."
+              className="h-full min-h-72"
+            />
           ) : null}
 
           {messages.map((message) => (

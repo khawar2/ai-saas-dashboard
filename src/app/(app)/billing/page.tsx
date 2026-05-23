@@ -1,19 +1,11 @@
 ﻿import { Card } from "@/components/ui/card";
+import { StatusPill } from "@/components/ui/status-pill";
 import { getCurrentUser } from "@/lib/current-user";
 import { BILLING_PLANS } from "@/lib/billing/plans";
+import { formatDate, formatNumber } from "@/lib/format";
 import { getActiveSubscription } from "@/models/subscriptions";
 import { getUsageSummary } from "@/models/usage";
 import { findUserById } from "@/models/users";
-
-function formatNumber(value: number) {
-  return new Intl.NumberFormat("en", { notation: value >= 1000000 ? "compact" : "standard" }).format(value);
-}
-
-function formatDate(date?: Date) {
-  return date
-    ? new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(date)
-    : "Not available";
-}
 
 export default async function BillingPage() {
   const sessionUser = await getCurrentUser();
@@ -52,7 +44,7 @@ export default async function BillingPage() {
           <Card key={plan.id} className={plan.id === currentPlan ? "p-6 ring-2 ring-sky-300/50" : "p-6"}>
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold text-white">{plan.name}</h2>
-              {plan.id === currentPlan ? <span className="rounded-full bg-sky-400 px-3 py-1 text-xs font-bold text-slate-950">Current</span> : null}
+              {plan.id === currentPlan ? <StatusPill className="bg-sky-400 text-slate-950">Current</StatusPill> : null}
             </div>
             <p className="mt-4 text-4xl font-semibold text-white">{plan.price}</p>
             <p className="mt-3 text-sm text-slate-400">{plan.description}</p>
