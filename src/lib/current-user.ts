@@ -12,7 +12,7 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
 
   const user = await findUserById(session.id);
 
-  if (!user) {
+  if (!user || user.status !== "active") {
     return null;
   }
 

@@ -2,7 +2,9 @@
 import { z } from "zod";
 
 import { verifyPassword } from "@/lib/auth";
-import { createSessionToken, normalizeRole, SESSION_COOKIE_NAME, SESSION_MAX_AGE_SECONDS } from "@/lib/session";
+import { checkRateLimit } from "@/lib/rate-limit";
+import { isSameOriginRequest } from "@/lib/request-security";
+import { createSessionToken, getSessionCookieOptions, normalizeRole, SESSION_COOKIE_NAME } from "@/lib/session";
 import { logAdminActivity } from "@/models/admin-activity";
 import { findUserByEmail, markUserLogin } from "@/models/users";
 
@@ -27,8 +29,14 @@ async function readRequestBody(request: Request) {
 
 function getSafeRedirectUrl(request: Request, next?: string) {
   const fallback = new URL("/dashboard", request.url);
+  const allowedPaths = ["/dashboard", "/chat", "/documents", "/billing", "/admin", "/settings"];
 
-  if (!next || !next.startsWith("/") || next.startsWith("//")) {
+  if (
+    !next ||
+    !next.startsWith("/") ||
+    next.startsWith("//") ||
+    !allowedPaths.some((path) => next === path || next.startsWith(`${path}/`))
+  ) {
     return fallback;
   }
 
@@ -36,6 +44,19 @@ function getSafeRedirectUrl(request: Request, next?: string) {
 }
 
 export async function POST(request: Request) {
+  if (!isSameOriginRequest(request)) {
+    return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
+  }
+
+  const rateLimit = checkRateLimit(request, { key: "auth-login", limit: 10, windowMs: 60_000 });
+
+  if (!rateLimit.ok) {
+    return NextResponse.json(
+      { error: "Too many login attempts. Please try again shortly." },
+      { status: 429, headers: { "Retry-After": String(rateLimit.retryAfterSeconds) } },
+    );
+  }
+
   const parsed = loginSchema.safeParse(await readRequestBody(request));
 
   if (!parsed.success) {
@@ -44,7 +65,7 @@ export async function POST(request: Request) {
 
   const user = await findUserByEmail(parsed.data.email);
 
-  if (!user || !(await verifyPassword(parsed.data.password, user.passwordHash))) {
+  if (!user || user.status !== "active" || !(await verifyPassword(parsed.data.password, user.passwordHash))) {
     return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
   }
 
@@ -61,18 +82,16 @@ export async function POST(request: Request) {
   }
 
   const response = NextResponse.redirect(getSafeRedirectUrl(request, parsed.data.next), 303);
-  response.cookies.set(SESSION_COOKIE_NAME, await createSessionToken({
-    id: String(user._id),
-    name: user.name,
-    email: user.email,
-    role: normalizeRole(user.role),
-  }), {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: SESSION_MAX_AGE_SECONDS,
-  });
+  response.cookies.set(
+    SESSION_COOKIE_NAME,
+    await createSessionToken({
+      id: String(user._id),
+      name: user.name,
+      email: user.email,
+      role: normalizeRole(user.role),
+    }),
+    getSessionCookieOptions(),
+  );
 
   return response;
 }

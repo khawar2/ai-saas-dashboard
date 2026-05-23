@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { appConfig, requiredEnv } from "@/lib/env";
 import { getCurrentUser } from "@/lib/current-user";
+import { isSameOriginRequest } from "@/lib/request-security";
 import { getStripe } from "@/lib/stripe/server";
 import { getActiveSubscription, setStripeCustomer } from "@/models/subscriptions";
 import { createUsageLog } from "@/models/usage";
@@ -15,6 +16,10 @@ const checkoutSchema = z.object({
 });
 
 export async function POST(request: Request) {
+  if (!isSameOriginRequest(request)) {
+    return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
+  }
+
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getCurrentUser } from "@/lib/current-user";
+import { isSameOriginRequest } from "@/lib/request-security";
 import { getStripe } from "@/lib/stripe/server";
 import { downgradeToFree, getActiveSubscription, markSubscriptionCanceling } from "@/models/subscriptions";
 import { createUsageLog } from "@/models/usage";
@@ -9,6 +10,10 @@ import { findUserById } from "@/models/users";
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
+  if (!isSameOriginRequest(request)) {
+    return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
+  }
+
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {

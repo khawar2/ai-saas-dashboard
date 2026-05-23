@@ -5,8 +5,17 @@ import { readSessionToken, SESSION_COOKIE_NAME } from "@/lib/session";
 const protectedRoutes = ["/dashboard", "/chat", "/documents", "/billing", "/admin", "/settings"];
 const authRoutes = ["/login", "/register", "/signup"];
 
+function withSecurityHeaders(response: NextResponse) {
+  response.headers.set("X-Content-Type-Options", "nosniff");
+  response.headers.set("X-Frame-Options", "DENY");
+  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  response.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  return response;
+}
+
 function getSafeRedirectPath(pathname: string) {
-  return pathname.startsWith("/") && !pathname.startsWith("//") ? pathname : "/dashboard";
+  const isProtectedPath = protectedRoutes.some((route) => pathname === route || pathname.startsWith(`${route}/`));
+  return pathname.startsWith("/") && !pathname.startsWith("//") && isProtectedPath ? pathname : "/dashboard";
 }
 
 export async function middleware(request: NextRequest) {
@@ -15,24 +24,24 @@ export async function middleware(request: NextRequest) {
   const session = await readSessionToken(request.cookies.get(SESSION_COOKIE_NAME)?.value);
 
   if (isAuthRoute && session) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return withSecurityHeaders(NextResponse.redirect(new URL("/dashboard", request.url)));
   }
 
   if (!isProtectedRoute) {
-    return NextResponse.next();
+    return withSecurityHeaders(NextResponse.next());
   }
 
   if (!session) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("next", getSafeRedirectPath(request.nextUrl.pathname));
-    return NextResponse.redirect(loginUrl);
+    return withSecurityHeaders(NextResponse.redirect(loginUrl));
   }
 
   if (request.nextUrl.pathname.startsWith("/admin") && session.role !== "admin") {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return withSecurityHeaders(NextResponse.redirect(new URL("/dashboard", request.url)));
   }
 
-  return NextResponse.next();
+  return withSecurityHeaders(NextResponse.next());
 }
 
 export const config = {

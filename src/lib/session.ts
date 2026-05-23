@@ -10,7 +10,9 @@ export type SessionUser = {
   role: UserRole;
 };
 
-type SessionPayload = SessionUser & {
+type SessionPayload = {
+  id: string;
+  role: UserRole;
   iat: number;
   exp: number;
 };
@@ -22,6 +24,10 @@ function getAuthSecret() {
 
   if (!secret) {
     throw new Error("Missing required environment variable: AUTH_SECRET");
+  }
+
+  if (secret.length < 32 || secret.includes("replace-with")) {
+    throw new Error("AUTH_SECRET must be a strong random value with at least 32 characters");
   }
 
   return secret;
@@ -89,10 +95,20 @@ export function normalizeRole(role?: string | null): UserRole {
   return role === "admin" || role === "owner" ? "admin" : "user";
 }
 
+export function getSessionCookieOptions(maxAge = SESSION_MAX_AGE_SECONDS) {
+  return {
+    httpOnly: true,
+    sameSite: "lax" as const,
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge,
+  };
+}
+
 export async function createSessionToken(user: SessionUser) {
   const now = Math.floor(Date.now() / 1000);
   const payload: SessionPayload = {
-    ...user,
+    id: user.id,
     role: normalizeRole(user.role),
     iat: now,
     exp: now + SESSION_MAX_AGE_SECONDS,
@@ -123,7 +139,7 @@ export async function readSessionToken(token?: string) {
   try {
     const payload = JSON.parse(base64UrlDecode(body)) as SessionPayload;
 
-    if (!payload.id || !payload.email || !payload.name || !payload.exp) {
+    if (!payload.id || !payload.role || !payload.exp) {
       return null;
     }
 
@@ -133,8 +149,8 @@ export async function readSessionToken(token?: string) {
 
     return {
       id: payload.id,
-      name: payload.name,
-      email: payload.email,
+      name: "",
+      email: "",
       role: normalizeRole(payload.role),
     } satisfies SessionUser;
   } catch {

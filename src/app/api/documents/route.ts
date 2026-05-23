@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 
 import { getCurrentUser } from "@/lib/current-user";
-import { processUploadedDocument } from "@/lib/uploads/document-processing";
+import { checkRateLimit } from "@/lib/rate-limit";
+import { isSameOriginRequest } from "@/lib/request-security";
+import { processUploadedDocument, UploadValidationError } from "@/lib/uploads/document-processing";
 import { createUploadedDocument, listUserDocuments } from "@/models/documents";
 import { findUserById } from "@/models/users";
 
@@ -54,6 +56,19 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  if (!isSameOriginRequest(request)) {
+    return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
+  }
+
+  const rateLimit = checkRateLimit(request, { key: "documents-upload", limit: 10, windowMs: 60_000 });
+
+  if (!rateLimit.ok) {
+    return NextResponse.json(
+      { error: "Too many uploads. Please try again shortly." },
+      { status: 429, headers: { "Retry-After": String(rateLimit.retryAfterSeconds) } },
+    );
+  }
+
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
@@ -91,7 +106,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ document: serializeDocument(document) }, { status: 201 });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Unable to upload document.";
+    const message = error instanceof UploadValidationError ? error.message : "Unable to upload document.";
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }

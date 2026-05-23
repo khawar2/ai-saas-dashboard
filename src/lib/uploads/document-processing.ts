@@ -6,6 +6,13 @@ import { appConfig } from "@/lib/env";
 
 export const MAX_UPLOAD_SIZE_BYTES = 10 * 1024 * 1024;
 
+export class UploadValidationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "UploadValidationError";
+  }
+}
+
 const allowedTypes = new Map([
   ["application/pdf", ".pdf"],
   ["text/plain", ".txt"],
@@ -58,10 +65,15 @@ export async function processUploadedDocument(file: File, userId: string) {
   const validationError = validateUpload(file);
 
   if (validationError) {
-    throw new Error(validationError);
+    throw new UploadValidationError(validationError);
   }
 
   const buffer = Buffer.from(await file.arrayBuffer());
+
+  if (file.type === "application/pdf" && !buffer.subarray(0, 5).equals(Buffer.from("%PDF-"))) {
+    throw new UploadValidationError("Invalid PDF file.");
+  }
+
   const sha256 = createHash("sha256").update(buffer).digest("hex");
   const extension = allowedTypes.get(file.type) ?? path.extname(file.name).toLowerCase();
   const storedName = `${Date.now()}-${randomUUID()}-${sanitizeBaseName(file.name)}${extension}`;

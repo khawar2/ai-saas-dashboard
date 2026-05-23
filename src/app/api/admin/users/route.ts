@@ -32,5 +32,18 @@ export async function GET() {
     });
   }
 
-  return NextResponse.json({ users });
+  return NextResponse.json({
+    users: users.map((user) => ({
+      id: String(user._id),
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      status: user.status,
+      usageLimits: user.usageLimits,
+      emailVerifiedAt: user.emailVerifiedAt?.toISOString() ?? null,
+      lastLoginAt: user.lastLoginAt?.toISOString() ?? null,
+      createdAt: user.createdAt.toISOString(),
+      updatedAt: user.updatedAt.toISOString(),
+    })),
+  });
 }

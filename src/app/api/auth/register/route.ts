@@ -2,7 +2,9 @@
 import { z } from "zod";
 
 import { hashPassword } from "@/lib/auth";
-import { createSessionToken, SESSION_COOKIE_NAME, SESSION_MAX_AGE_SECONDS, type UserRole } from "@/lib/session";
+import { checkRateLimit } from "@/lib/rate-limit";
+import { isSameOriginRequest } from "@/lib/request-security";
+import { createSessionToken, getSessionCookieOptions, SESSION_COOKIE_NAME, type UserRole } from "@/lib/session";
 import { logAdminActivity } from "@/models/admin-activity";
 import { createDefaultSubscription } from "@/models/subscriptions";
 import { countUsers, createUser, findUserByEmail } from "@/models/users";
@@ -38,8 +40,14 @@ function getAdminEmails() {
 
 function getSafeRedirectUrl(request: Request, next?: string) {
   const fallback = new URL("/dashboard", request.url);
+  const allowedPaths = ["/dashboard", "/chat", "/documents", "/billing", "/admin", "/settings"];
 
-  if (!next || !next.startsWith("/") || next.startsWith("//")) {
+  if (
+    !next ||
+    !next.startsWith("/") ||
+    next.startsWith("//") ||
+    !allowedPaths.some((path) => next === path || next.startsWith(`${path}/`))
+  ) {
     return fallback;
   }
 
@@ -47,6 +55,19 @@ function getSafeRedirectUrl(request: Request, next?: string) {
 }
 
 export async function POST(request: Request) {
+  if (!isSameOriginRequest(request)) {
+    return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
+  }
+
+  const rateLimit = checkRateLimit(request, { key: "auth-register", limit: 5, windowMs: 60_000 });
+
+  if (!rateLimit.ok) {
+    return NextResponse.json(
+      { error: "Too many registration attempts. Please try again shortly." },
+      { status: 429, headers: { "Retry-After": String(rateLimit.retryAfterSeconds) } },
+    );
+  }
+
   const parsed = registerSchema.safeParse(await readRequestBody(request));
 
   if (!parsed.success) {
@@ -82,18 +103,16 @@ export async function POST(request: Request) {
   }
 
   const response = NextResponse.redirect(getSafeRedirectUrl(request, parsed.data.next), 303);
-  response.cookies.set(SESSION_COOKIE_NAME, await createSessionToken({
-    id: String(user._id),
-    name: user.name,
-    email: user.email,
-    role,
-  }), {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: SESSION_MAX_AGE_SECONDS,
-  });
+  response.cookies.set(
+    SESSION_COOKIE_NAME,
+    await createSessionToken({
+      id: String(user._id),
+      name: user.name,
+      email: user.email,
+      role,
+    }),
+    getSessionCookieOptions(),
+  );
 
   return response;
 }

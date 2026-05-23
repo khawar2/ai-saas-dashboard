@@ -3,6 +3,8 @@ import { z } from "zod";
 
 import { getAiProvider } from "@/lib/ai/provider";
 import { getCurrentUser } from "@/lib/current-user";
+import { checkRateLimit } from "@/lib/rate-limit";
+import { isSameOriginRequest } from "@/lib/request-security";
 import {
   createMessage,
   getOrCreateConversation,
@@ -32,6 +34,19 @@ async function readRequestBody(request: Request) {
 }
 
 export async function POST(request: Request) {
+  if (!isSameOriginRequest(request)) {
+    return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
+  }
+
+  const rateLimit = checkRateLimit(request, { key: "chat", limit: 30, windowMs: 60_000 });
+
+  if (!rateLimit.ok) {
+    return NextResponse.json(
+      { error: "Too many chat requests. Please slow down and try again." },
+      { status: 429, headers: { "Retry-After": String(rateLimit.retryAfterSeconds) } },
+    );
+  }
+
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
@@ -147,17 +162,18 @@ export async function POST(request: Request) {
       },
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "AI provider request failed.";
+    const internalMessage = error instanceof Error ? error.message : "AI provider request failed.";
+    const publicMessage = "AI provider request failed. Please try again.";
     await createMessage({
       conversationId: conversation._id,
       userId: user._id,
       role: "assistant",
-      content: message,
+      content: publicMessage,
       status: "failed",
-      error: message,
+      error: internalMessage,
     });
     await touchConversation(conversation._id, 2);
 
-    return NextResponse.json({ error: message }, { status: 502 });
+    return NextResponse.json({ error: publicMessage }, { status: 502 });
   }
 }
