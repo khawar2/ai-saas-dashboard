@@ -235,6 +235,56 @@ npm run dev
 
 ---
 
+## Run Quality Checks
+
+```bash
+npm run lint
+npm run typecheck
+npm run check
+npm run build
+```
+
+---
+
+## Playwright E2E Tests
+
+Install browser binaries once:
+
+```bash
+npx playwright install
+```
+
+Run the full suite:
+
+```bash
+npm run test:e2e
+```
+
+Run with the Playwright UI:
+
+```bash
+npm run test:e2e:ui
+```
+
+Public and unauthenticated security tests can run without external services. Authenticated tests require:
+
+```env
+MONGODB_URI=
+MONGODB_DB=ai_saas_dashboard
+AUTH_SECRET=generate-a-strong-32-plus-character-secret
+```
+
+Admin tests additionally require:
+
+```env
+PLAYWRIGHT_ADMIN_EMAIL=
+PLAYWRIGHT_ADMIN_PASSWORD=
+```
+
+The E2E suite mocks OpenAI and Stripe flows where appropriate, so tests do not use real AI credits or process real payments.
+
+---
+
 ## Environment Variables
 
 Create a `.env.local` file:
@@ -242,8 +292,10 @@ Create a `.env.local` file:
 ```env
 MONGODB_URI=
 OPENAI_API_KEY=
-NEXTAUTH_SECRET=
+AUTH_SECRET=
 STRIPE_SECRET_KEY=
+STRIPE_PRO_PRICE_ID=
+STRIPE_WEBHOOK_SECRET=
 ```
 
 ---

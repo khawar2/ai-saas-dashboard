@@ -195,8 +195,8 @@ export function ChatInterface() {
   }
 
   return (
-    <section className="grid min-h-[calc(100vh-8rem)] gap-6 xl:grid-cols-[1fr_22rem]">
-      <Card className="flex min-h-[38rem] flex-col p-4 sm:p-5">
+    <section data-testid="chat-page" className="grid min-h-[calc(100vh-8rem)] gap-6 xl:grid-cols-[1fr_22rem]">
+      <Card data-testid="chat-panel" className="flex min-h-[38rem] flex-col p-4 sm:p-5">
         <div className="flex flex-col gap-4 border-b border-white/10 pb-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm font-medium text-sky-300">Assistant workspace</p>
@@ -212,6 +212,7 @@ export function ChatInterface() {
               setError(null);
               setUpgradeHref(null);
             }}
+            data-testid="new-conversation-button"
             className="w-fit rounded-full border border-white/10 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-sky-300/60 hover:bg-white/10"
           >
             New conversation
@@ -271,8 +272,9 @@ export function ChatInterface() {
           ))}
         </div>
 
-        <form onSubmit={sendMessage} className="mt-5 flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row">
+        <form data-testid="chat-form" onSubmit={sendMessage} className="mt-5 flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row">
           <textarea
+            data-testid="chat-input"
             value={input}
             onChange={(event) => setInput(event.target.value)}
             placeholder="Ask your AI assistant..."
@@ -280,14 +282,14 @@ export function ChatInterface() {
             disabled={isSending}
             required
           />
-          <Button type="submit" disabled={isSending || !input.trim()}>
+          <Button data-testid="chat-send" type="submit" disabled={isSending || !input.trim()}>
             {isSending ? "Sending..." : "Send"}
           </Button>
         </form>
       </Card>
 
       <aside className="space-y-4">
-        <Card className="p-5">
+        <Card data-testid="chat-history" className="p-5">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-white">Chat history</h3>
             {isLoadingConversations ? <span className="text-xs text-slate-500">Loading</span> : null}
@@ -314,7 +316,7 @@ export function ChatInterface() {
           </div>
         </Card>
 
-        <Card className="p-5">
+        <Card data-testid="prompt-shortcuts" className="p-5">
           <h3 className="text-lg font-semibold text-white">Prompt shortcuts</h3>
           <div className="mt-4 grid gap-2">
             {prompts.map((prompt) => (

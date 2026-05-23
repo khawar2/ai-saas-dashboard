@@ -17,7 +17,7 @@ export default async function AdminPage() {
   const data = await getAdminDashboardData();
 
   return (
-    <section className="space-y-8">
+    <section data-testid="admin-page" className="space-y-8">
       <div>
         <p className="text-sm font-medium text-sky-300">Admin</p>
         <h2 className="mt-2 text-4xl font-semibold tracking-tight text-white">Platform control center</h2>
@@ -26,7 +26,7 @@ export default async function AdminPage() {
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
+      <div data-testid="admin-summary-cards" className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
         {[
           ["Total users", formatNumber(data.stats.totalUsers)],
           ["Admins", formatNumber(data.stats.adminUsers)],
@@ -42,7 +42,7 @@ export default async function AdminPage() {
         ))}
       </div>
 
-      <Card className="overflow-hidden">
+      <Card data-testid="admin-users-table" className="overflow-hidden">
         <div className="border-b border-white/10 p-5">
           <h3 className="text-xl font-semibold text-white">Users and usage</h3>
           <p className="mt-1 text-sm text-slate-400">Latest 50 users with subscription and monthly usage context.</p>
@@ -76,7 +76,7 @@ export default async function AdminPage() {
       </Card>
 
       <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
-        <Card className="overflow-hidden">
+        <Card data-testid="admin-subscriptions-table" className="overflow-hidden">
           <div className="border-b border-white/10 p-5">
             <h3 className="text-xl font-semibold text-white">Subscriptions</h3>
             <p className="mt-1 text-sm text-slate-400">Billing status across Free and Pro plans.</p>
@@ -105,7 +105,7 @@ export default async function AdminPage() {
           </div>
         </Card>
 
-        <Card className="overflow-hidden">
+        <Card data-testid="admin-conversations-table" className="overflow-hidden">
           <div className="border-b border-white/10 p-5">
             <h3 className="text-xl font-semibold text-white">Recent conversations</h3>
             <p className="mt-1 text-sm text-slate-400">Latest AI conversations for support and monitoring.</p>
@@ -138,7 +138,7 @@ export default async function AdminPage() {
         </Card>
       </div>
 
-      <Card className="overflow-hidden">
+      <Card data-testid="admin-activity-table" className="overflow-hidden">
         <div className="border-b border-white/10 p-5">
           <h3 className="text-xl font-semibold text-white">System activity</h3>
           <p className="mt-1 text-sm text-slate-400">Recent admin and billing events captured for audit review.</p>

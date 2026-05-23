@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 
 export default function SettingsPage() {
   return (
-    <section className="space-y-8">
+    <section data-testid="settings-page" className="space-y-8">
       <div>
         <p className="text-sm font-medium text-sky-300">Settings</p>
         <h2 className="mt-2 text-4xl font-semibold tracking-tight text-white">Workspace settings</h2>
@@ -12,14 +12,14 @@ export default function SettingsPage() {
       </div>
       <div className="grid gap-6 xl:grid-cols-[1fr_22rem]">
         <Card className="p-6">
-          <form className="space-y-5">
+          <form data-testid="settings-form" className="space-y-5">
             <label className="block text-sm font-medium text-slate-300">
               Workspace name
-              <Input className="mt-2" defaultValue="Nexora AI" />
+              <Input data-testid="settings-workspace-name" className="mt-2" defaultValue="Nexora AI" />
             </label>
             <label className="block text-sm font-medium text-slate-300">
               Support email
-              <Input className="mt-2" type="email" defaultValue="support@example.com" />
+              <Input data-testid="settings-support-email" className="mt-2" type="email" defaultValue="support@example.com" />
             </label>
             <label className="block text-sm font-medium text-slate-300">
               Default AI model
@@ -29,7 +29,7 @@ export default function SettingsPage() {
               Monthly spend alert
               <Input className="mt-2" defaultValue="$5,000" />
             </label>
-            <Button type="submit">Save settings</Button>
+            <Button data-testid="settings-save" type="submit">Save settings</Button>
           </form>
         </Card>
         <div className="space-y-4">

@@ -18,7 +18,7 @@ export default async function BillingPage() {
   const plans = [BILLING_PLANS.free, BILLING_PLANS.pro];
 
   return (
-    <section className="space-y-8">
+    <section data-testid="billing-page" className="space-y-8">
       <Card className="p-6 sm:p-8">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
@@ -39,7 +39,7 @@ export default async function BillingPage() {
           </div>
         </div>
       </Card>
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div data-testid="billing-plans" className="grid gap-4 lg:grid-cols-2">
         {plans.map((plan) => (
           <Card key={plan.id} className={plan.id === currentPlan ? "p-6 ring-2 ring-sky-300/50" : "p-6"}>
             <div className="flex items-center justify-between">
@@ -59,14 +59,14 @@ export default async function BillingPage() {
             {plan.id === "pro" && currentPlan !== "pro" ? (
               <form action="/api/billing/checkout" method="post" className="mt-6">
                 <input type="hidden" name="plan" value="pro" />
-                <button className="w-full rounded-full bg-white px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-100">
+                <button data-testid="upgrade-pro-button" className="w-full rounded-full bg-white px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-100">
                   Upgrade to Pro
                 </button>
               </form>
             ) : null}
             {plan.id === "free" && currentPlan !== "free" ? (
               <form action="/api/billing/downgrade" method="post" className="mt-6">
-                <button className="w-full rounded-full border border-white/10 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+                <button data-testid="downgrade-free-button" className="w-full rounded-full border border-white/10 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
                   Downgrade to Free
                 </button>
               </form>
@@ -80,7 +80,7 @@ export default async function BillingPage() {
         ))}
       </div>
       <div className="grid gap-4 lg:grid-cols-[1fr_24rem]">
-        <Card className="p-6">
+        <Card data-testid="billing-status" className="p-6">
           <h2 className="text-xl font-semibold text-white">Billing status</h2>
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             <div className="rounded-2xl bg-white/[0.04] p-4">
@@ -101,7 +101,7 @@ export default async function BillingPage() {
             </div>
           </div>
         </Card>
-        <Card className="p-6">
+        <Card data-testid="subscription-actions" className="p-6">
           <h2 className="text-xl font-semibold text-white">Subscription actions</h2>
           <div className="mt-5 space-y-3">
             {currentPlan === "pro" && subscription?.cancelAtPeriodEnd ? (

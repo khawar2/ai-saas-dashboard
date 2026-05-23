@@ -39,7 +39,7 @@ export default function Home() {
   return (
     <main className="min-h-screen overflow-hidden">
       <SiteHeader />
-      <section className="mx-auto flex w-full max-w-7xl flex-col gap-16 px-6 py-16 sm:py-24 lg:flex-row lg:items-center lg:px-8">
+      <section data-testid="landing-hero" className="mx-auto flex w-full max-w-7xl flex-col gap-16 px-6 py-16 sm:py-24 lg:flex-row lg:items-center lg:px-8">
         <div className="max-w-3xl">
           <Badge>Production AI SaaS Starter</Badge>
           <h1 className="mt-6 text-5xl font-semibold tracking-tight text-white sm:text-7xl lg:text-8xl">
@@ -102,7 +102,7 @@ export default function Home() {
           </div>
         </Card>
       </section>
-      <section id="features" className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+      <section id="features" data-testid="landing-features" className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
         <SectionHeading
           eyebrow="Features"
           title="Everything a serious AI SaaS frontend needs"
@@ -139,7 +139,7 @@ export default function Home() {
           </Card>
         </div>
       </section>
-      <section id="pricing" className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+      <section id="pricing" data-testid="landing-pricing" className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
         <SectionHeading
           eyebrow="Pricing"
           title="Simple plans for every stage"

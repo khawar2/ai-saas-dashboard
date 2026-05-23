@@ -28,7 +28,7 @@ export function AppTopbar({ user }: { user: SessionUser }) {
   const title = titles[pathname] ?? "Workspace";
 
   return (
-    <header className="sticky top-0 z-20 border-b border-white/10 bg-slate-950/80 px-5 py-4 backdrop-blur-xl sm:px-8 lg:px-10">
+    <header data-testid="app-topbar" className="sticky top-0 z-20 border-b border-white/10 bg-slate-950/80 px-5 py-4 backdrop-blur-xl sm:px-8 lg:px-10">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-300">
@@ -44,7 +44,7 @@ export function AppTopbar({ user }: { user: SessionUser }) {
             New chat
           </Link>
           <form action="/api/auth/logout" method="post">
-            <button className="rounded-full border border-white/10 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-red-300/60 hover:bg-red-500/10 hover:text-red-100">
+            <button data-testid="logout-button" className="rounded-full border border-white/10 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-red-300/60 hover:bg-red-500/10 hover:text-red-100">
               Logout
             </button>
           </form>

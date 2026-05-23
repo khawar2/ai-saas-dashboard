@@ -102,19 +102,20 @@ export function DocumentUploadPanel() {
   }
 
   return (
-    <section className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
-      <Card className="p-6">
+    <section data-testid="documents-page" className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
+      <Card data-testid="document-upload-card" className="p-6">
         <p className="text-sm font-medium text-sky-300">Document upload</p>
         <h2 className="mt-2 text-3xl font-semibold tracking-tight text-white">Prepare files for AI Q&A</h2>
         <p className="mt-3 text-sm leading-6 text-slate-400">
           Upload PDF, TXT, or Markdown files. Files are stored outside the public directory and extracted text is saved for future retrieval workflows.
         </p>
 
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+        <form data-testid="document-upload-form" onSubmit={handleSubmit} className="mt-6 space-y-4">
           <label className="flex min-h-44 cursor-pointer flex-col items-center justify-center rounded-3xl border border-dashed border-white/20 bg-white/[0.04] p-6 text-center transition hover:border-sky-300/60 hover:bg-white/[0.07]">
             <span className="text-lg font-semibold text-white">Choose a document</span>
             <span className="mt-2 text-sm text-slate-400">PDF, TXT, or Markdown up to 10MB</span>
             <input
+              data-testid="document-file-input"
               type="file"
               name="file"
               accept=".pdf,.txt,.md,text/plain,text/markdown,application/pdf"
@@ -134,13 +135,13 @@ export function DocumentUploadPanel() {
             <Alert variant="error">{error}</Alert>
           ) : null}
 
-          <Button type="submit" disabled={!selectedFile || isUploading} className="w-full">
+          <Button data-testid="document-upload-submit" type="submit" disabled={!selectedFile || isUploading} className="w-full">
             {isUploading ? "Uploading and extracting..." : "Upload document"}
           </Button>
         </form>
       </Card>
 
-      <Card className="overflow-hidden">
+      <Card data-testid="documents-list" className="overflow-hidden">
         <div className="border-b border-white/10 p-5">
           <h3 className="text-xl font-semibold text-white">Uploaded documents</h3>
           <p className="mt-1 text-sm text-slate-400">Extracted previews are ready for future AI chat and document Q&A.</p>

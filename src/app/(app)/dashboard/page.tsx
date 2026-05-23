@@ -29,7 +29,7 @@ export default async function DashboardPage() {
   const messagePercent = usage?.percentages.messages ?? 0;
 
   return (
-    <section className="space-y-8">
+    <section data-testid="dashboard-page" className="space-y-8">
       <div className="grid gap-6 lg:grid-cols-[1fr_22rem]">
         <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-sky-400/20 via-white/[0.06] to-transparent p-6 sm:p-8">
           <p className="text-sm font-medium text-sky-300">Workspace overview</p>
@@ -64,7 +64,7 @@ export default async function DashboardPage() {
           </div>
         </Alert>
       ) : null}
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div data-testid="usage-cards" className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard
           label="Messages this month"
           value={formatNumber(usage?.monthly.totalMessages ?? 0)}
@@ -87,7 +87,7 @@ export default async function DashboardPage() {
         />
       </div>
       <div className="grid gap-6 xl:grid-cols-[1fr_24rem]">
-        <Card className="p-6">
+        <Card data-testid="plan-limits" className="p-6">
           <h2 className="text-xl font-semibold text-white">Plan limits</h2>
           <div className="mt-6 space-y-6">
             <div>

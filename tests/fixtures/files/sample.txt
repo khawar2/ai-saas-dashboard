@@ -1,0 +1,2 @@
+This is a Playwright upload fixture for document ingestion tests.
+It contains plain text that should be extracted and shown as a preview.
