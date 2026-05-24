@@ -1,346 +1,225 @@
-<h1 align="center">AI SaaS Platform</h1>
+# Nexora AI SaaS Platform
 
-<h3 align="center">
-Modern AI Powered SaaS Platform built with Next.js React Node.js MongoDB and OpenAI
-</h3>
+A production-oriented AI SaaS platform built with Next.js App Router, React, TypeScript, Tailwind CSS, MongoDB, Stripe, OpenAI, and Playwright. It includes authentication, role-based access, AI chat, document uploads, usage tracking, billing flows, admin monitoring, and a polished responsive SaaS UI.
 
-<p align="center">
-A production-style AI SaaS application with authentication, AI chat, subscription billing, dashboards, admin panel, usage tracking, and scalable architecture.
-</p>
+![Nexora AI landing page](public/screenshots/landing.png)
 
-<p align="center">
-<img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white" />
-<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
-<img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" />
-<img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" />
-<img src="https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white" />
-<img src="https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
-</p>
+## Highlights
 
----
+- Modern premium SaaS landing page and authenticated app shell
+- Secure signup, login, logout, signed HTTP-only sessions, and protected routes
+- Role-based user/admin access with admin-only routes and API checks
+- AI chat workspace with conversation history, loading states, prompt shortcuts, and provider abstraction
+- MongoDB-backed models for users, subscriptions, conversations, messages, usage logs, documents, and admin activity
+- Stripe-ready billing flows for checkout, downgrade, cancellation, resume, and webhook sync
+- Usage tracking for messages, tokens, daily/monthly limits, remaining credits, and upgrade messaging
+- PDF/TXT/Markdown upload flow with validation, extracted text storage, and document listing
+- Playwright E2E suite covering public, auth, protected, dashboard, chat, documents, billing, admin, settings, and API behavior
+- Local development mode with temporary in-memory MongoDB for easy portfolio demos
 
-# 🚀 Overview
+## Screenshots
 
-This project is a modern AI SaaS platform designed to simulate a real production-grade software product.
+### Landing Page
 
-The application allows users to:
+![Landing page](public/screenshots/landing.png)
 
-- Create accounts and authenticate securely
-- Interact with AI powered chat
-- Manage conversations and history
-- Upload files and documents
-- Track usage and subscription limits
-- Manage billing and subscriptions
-- Access dashboards and analytics
-- Use a responsive modern UI across devices
+### Mobile Landing
 
-The goal of this project is to demonstrate scalable full stack architecture, AI integration, SaaS workflows, and production-level engineering practices.
+![Mobile landing page](public/screenshots/landing-mobile.png)
 
----
+### Dashboard
 
-# ✨ Features
+![Dashboard](public/screenshots/dashboard.png)
 
-## Authentication
-- Secure login and signup
-- Protected routes
-- Session handling
-- Role based access
+### AI Chat
 
----
+![AI chat](public/screenshots/chat.png)
 
-## AI Chat System
-- OpenAI integration
-- Real-time chat interface
-- Conversation history
-- Persistent chat storage
-- Streaming AI responses
+### Billing
 
----
+![Billing page](public/screenshots/billing.png)
 
-## Dashboard
-- User analytics
-- Usage tracking
-- Recent conversations
-- Subscription overview
-- Responsive dashboard UI
+### Documents
 
----
+![Documents page](public/screenshots/documents.png)
 
-## Billing & Subscription
-- Stripe integration
-- Free and Pro plans
-- Subscription management
-- Usage limits
+### Admin
 
----
+![Admin panel](public/screenshots/admin.png)
 
-## File Upload Support
-- PDF upload
-- Document handling
-- AI document processing foundation
+## Tech Stack
 
----
+Frontend:
 
-## Admin Panel
-- User management
-- Usage monitoring
-- Subscription overview
-- Activity tracking
-
----
-
-# 🛠 Tech Stack
-
-## Frontend
-- Next.js
+- Next.js App Router
 - React
 - TypeScript
 - Tailwind CSS
-- Zustand / Redux Toolkit
 
----
+Backend and data:
 
-## Backend
-- Node.js
-- Next.js API Routes
-- REST APIs
-- Authentication Middleware
+- Next.js API routes
+- MongoDB native driver
+- Signed HTTP-only cookie sessions
+- Zod validation
 
----
+Integrations and tooling:
 
-## Database
-- MongoDB
-- Mongoose
+- OpenAI SDK
+- Stripe SDK
+- PDF parsing for document uploads
+- Playwright E2E testing
+- Vercel-ready deployment config
 
----
+## Project Structure
 
-## AI & Automation
-- OpenAI API
-- AI Chat Workflows
-
----
-
-## DevOps & Deployment
-- Vercel
-- GitHub Actions
-- Environment Configuration
-
----
-
-# 📂 Project Structure
-
-```bash
+```text
 src/
-│
-├── app/
-├── components/
-├── features/
-├── hooks/
-├── lib/
-├── services/
-├── store/
-├── models/
-├── api/
-├── styles/
-└── utils/
+  app/
+    (app)/          Authenticated dashboard routes
+    (auth)/         Login, signup, auth pages
+    api/            API route handlers
+  components/
+    auth/           Login and signup form components
+    chat/           AI chat UI
+    documents/      Document upload UI
+    ui/             Shared UI primitives
+  lib/              Auth, AI, billing, uploads, env, utilities
+  models/           MongoDB data access and schemas
+tests/
+  e2e/              Playwright specs by module
+  fixtures/         Playwright fixtures and files
+  utils/            Auth and test-user helpers
+scripts/
+  dev-with-memory-mongo.mjs
+  e2e-with-memory-mongo.mjs
 ```
 
----
+## Getting Started
 
-# 📸 Screenshots
-
-## Landing Page
-Modern SaaS landing page with hero section, pricing, and features.
-
----
-
-## Dashboard
-Analytics dashboard with usage tracking and AI activity.
-
----
-
-## AI Chat
-Responsive AI chat interface with conversation history.
-
----
-
-## Admin Panel
-Admin dashboard for monitoring users and subscriptions.
-
----
-
-# ⚡ Performance Optimizations
-
-- Lazy loading
-- Optimized API calls
-- Component memoization
-- Responsive rendering
-- Reusable component architecture
-- Efficient state management
-
----
-
-# 🔐 Security Features
-
-- Protected API routes
-- Secure authentication flow
-- Environment variable management
-- Role-based authorization
-- Input validation
-
----
-
-# 🌱 Future Improvements
-
-- Multi-model AI support
-- RAG integrations
-- Vector database support
-- AI document analysis
-- Team collaboration
-- Real-time notifications
-
----
-
-# 🧠 What This Project Demonstrates
-
-This project demonstrates experience with:
-
-- Full Stack Development
-- SaaS Architecture
-- AI Integration
-- Authentication Systems
-- Dashboard Development
-- API Integration
-- State Management
-- Production-Ready Frontend Architecture
-- Scalable Backend Design
-
----
-
-# 🚀 Getting Started
-
-## Install Dependencies
+Install dependencies:
 
 ```bash
 npm install
 ```
 
----
-
-## Start Development Server
-
-```bash
-npm run dev
-```
-
-Run local development with a temporary in-memory MongoDB database:
-
-```bash
-npm run dev:local
-```
-
-Use `dev:local` when you want signup/login to work without installing MongoDB or configuring MongoDB Atlas. Data resets when the process stops.
-
----
-
-## Run Quality Checks
-
-```bash
-npm run lint
-npm run typecheck
-npm run check
-npm run build
-```
-
----
-
-## Playwright E2E Tests
-
-Install browser binaries once:
+Install Playwright browsers:
 
 ```bash
 npx playwright install
 ```
 
-Run the full suite:
+Run the app with temporary in-memory MongoDB:
 
 ```bash
-npm run test:e2e
+npm run dev:local
 ```
 
-Run the complete local authenticated flow without Docker or a local MongoDB install:
+Open [http://localhost:3000](http://localhost:3000).
+
+Use `dev:local` for local demos when you do not want to install MongoDB or configure MongoDB Atlas. Data resets when the process stops.
+
+## Environment Variables
+
+For a persistent local or production setup, create `.env.local`:
+
+```env
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+MONGODB_URI=mongodb+srv://USER:PASSWORD@cluster.example.mongodb.net/?retryWrites=true&w=majority
+MONGODB_DB=ai_saas_dashboard
+
+AUTH_SECRET=replace-with-a-strong-32-plus-character-secret
+ADMIN_EMAILS=admin@example.com
+
+UPLOAD_STORAGE_DIR=.storage/uploads
+
+AI_PROVIDER=openai
+OPENAI_API_KEY=sk_replace_me
+OPENAI_MODEL=gpt-4o-mini
+AI_PROVIDER_MODEL=gpt-4o-mini
+
+STRIPE_SECRET_KEY=sk_test_replace_me
+STRIPE_PRO_PRICE_ID=price_replace_me
+STRIPE_WEBHOOK_SECRET=whsec_replace_me
+```
+
+Generate a strong auth secret:
+
+```bash
+openssl rand -base64 32
+```
+
+## Scripts
+
+```bash
+npm run dev           # Start Next.js with your configured environment
+npm run dev:local     # Start Next.js with temporary in-memory MongoDB
+npm run build         # Build for production
+npm run start         # Start production server
+npm run lint          # Run ESLint
+npm run typecheck     # Run TypeScript checks
+npm run check         # Run lint and typecheck
+npm run test:e2e      # Run Playwright tests against configured env
+npm run test:e2e:local # Run complete E2E flow with in-memory MongoDB
+npm run test:e2e:ui   # Open Playwright UI mode
+```
+
+## Testing
+
+Run the complete local E2E flow:
 
 ```bash
 npm run test:e2e:local
 ```
 
-This starts an isolated in-memory MongoDB instance, injects test-only auth/admin credentials, starts Next.js on `http://localhost:3100`, and runs the suite serially for reliability.
+This starts an isolated in-memory MongoDB instance, injects test-only auth/admin credentials, starts Next.js on `http://localhost:3100`, and runs the Playwright suite serially for reliability.
 
-Run with the Playwright UI:
+The tests cover:
 
-```bash
-npm run test:e2e:ui
-```
+- Landing page and responsive navigation
+- Signup, login, logout, invalid credentials, and auth redirects
+- Protected route access rules
+- Dashboard usage cards, plan limits, and upgrade messaging
+- AI chat success, error, history, and prompt shortcut flows
+- Document upload validation and listing
+- Billing plans and subscription actions
+- Admin route protection and admin tables
+- Settings form behavior
+- Protected and admin API behavior
 
-Public and unauthenticated security tests can run without external services. Authenticated tests require:
+## Deployment
 
-```env
-MONGODB_URI=
-MONGODB_DB=ai_saas_dashboard
-AUTH_SECRET=generate-a-strong-32-plus-character-secret
-```
+The project is ready for Vercel deployment.
 
-Admin tests additionally require:
+Before deploying:
 
-```env
-PLAYWRIGHT_ADMIN_EMAIL=
-PLAYWRIGHT_ADMIN_PASSWORD=
-```
+- Set all production environment variables in Vercel
+- Use a strong `AUTH_SECRET`
+- Configure MongoDB Atlas
+- Configure Stripe products, prices, and webhook secret
+- Configure `NEXT_PUBLIC_APP_URL` to your production domain
+- Use durable object storage such as Vercel Blob, S3, or Cloudflare R2 for production binary uploads
+- Run `npm run check` and `npm run build`
 
-The E2E suite mocks OpenAI and Stripe flows where appropriate, so tests do not use real AI credits or process real payments.
+## Security Notes
 
----
+- Sessions use signed HTTP-only cookies
+- Protected routes are enforced through middleware and server layouts
+- Admin access is checked in middleware and API routes
+- API input is validated with Zod
+- Browser state-changing routes include same-origin checks
+- Auth, chat, and upload routes include rate limiting
+- API responses avoid exposing password hashes, raw provider errors, secrets, and file paths
 
-## Environment Variables
+## Portfolio Notes
 
-Create a `.env.local` file:
+This project demonstrates full-stack SaaS architecture, production-focused UI design, secure authentication, role-based access, database modeling, AI integration, billing workflows, file uploads, admin monitoring, and automated E2E testing.
 
-```env
-MONGODB_URI=
-OPENAI_API_KEY=
-AUTH_SECRET=
-STRIPE_SECRET_KEY=
-STRIPE_PRO_PRICE_ID=
-STRIPE_WEBHOOK_SECRET=
-```
+## Author
 
----
-
-# 🌐 Deployment
-
-Frontend deployment supported on:
-
-- Vercel
-- Netlify
-
-Backend and database can be deployed using:
-
-- Railway
-- Render
-- MongoDB Atlas
-
----
-
-# 👨‍💻 Author
-
-### Khawar Saeed
+Khawar Saeed
 
 - GitHub: https://github.com/khawar2
 - LinkedIn: https://www.linkedin.com/in/khawar-saeed096/
 - Email: khawarsaeed26@gmail.com
-
----
-
-# ⭐ Project Goal
-
-The goal of this project is to showcase modern AI SaaS architecture, scalable frontend engineering, and production-level full stack development practices using the MERN ecosystem and AI integrations.
