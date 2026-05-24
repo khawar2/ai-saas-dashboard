@@ -43,6 +43,19 @@ function getSafeRedirectUrl(request: Request, next?: string) {
   return new URL(next, request.url);
 }
 
+function wantsJson(request: Request) {
+  return request.headers.get("accept")?.includes("application/json") ?? false;
+}
+
+function isConfigurationError(error: unknown) {
+  return error instanceof Error && (
+    error.message.includes("Missing required environment variable") ||
+    error.message.includes("AUTH_SECRET") ||
+    error.message.includes("ECONNREFUSED") ||
+    error.name === "MongoServerSelectionError"
+  );
+}
+
 export async function POST(request: Request) {
   if (!isSameOriginRequest(request)) {
     return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
@@ -57,41 +70,57 @@ export async function POST(request: Request) {
     );
   }
 
-  const parsed = loginSchema.safeParse(await readRequestBody(request));
+  try {
+    const parsed = loginSchema.safeParse(await readRequestBody(request));
 
-  if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid credentials." }, { status: 400 });
+    if (!parsed.success) {
+      return NextResponse.json({ error: "Invalid credentials." }, { status: 400 });
+    }
+
+    const user = await findUserByEmail(parsed.data.email);
+
+    if (!user || user.status !== "active" || !(await verifyPassword(parsed.data.password, user.passwordHash))) {
+      return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
+    }
+
+    await markUserLogin(user._id);
+
+    if (normalizeRole(user.role) === "admin") {
+      await logAdminActivity({
+        actorUserId: user._id,
+        actorEmail: user.email,
+        action: "admin.login",
+        targetType: "user",
+        targetId: user._id,
+      });
+    }
+
+    const redirectUrl = getSafeRedirectUrl(request, parsed.data.next);
+    const response = wantsJson(request)
+      ? NextResponse.json({ redirectTo: `${redirectUrl.pathname}${redirectUrl.search}` })
+      : NextResponse.redirect(redirectUrl, 303);
+
+    response.cookies.set(
+      SESSION_COOKIE_NAME,
+      await createSessionToken({
+        id: String(user._id),
+        name: user.name,
+        email: user.email,
+        role: normalizeRole(user.role),
+      }),
+      getSessionCookieOptions(),
+    );
+
+    return response;
+  } catch (error) {
+    if (isConfigurationError(error)) {
+      return NextResponse.json(
+        { error: "Authentication database is not available. Start MongoDB locally or set MONGODB_URI to a MongoDB Atlas connection string, then restart the dev server." },
+        { status: 503 },
+      );
+    }
+
+    console.error("Login failed", error);
+    return NextResponse.json({ error: "Unable to sign in right now. Please try again." }, { status: 500 });
   }
-
-  const user = await findUserByEmail(parsed.data.email);
-
-  if (!user || user.status !== "active" || !(await verifyPassword(parsed.data.password, user.passwordHash))) {
-    return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
-  }
-
-  await markUserLogin(user._id);
-
-  if (normalizeRole(user.role) === "admin") {
-    await logAdminActivity({
-      actorUserId: user._id,
-      actorEmail: user.email,
-      action: "admin.login",
-      targetType: "user",
-      targetId: user._id,
-    });
-  }
-
-  const response = NextResponse.redirect(getSafeRedirectUrl(request, parsed.data.next), 303);
-  response.cookies.set(
-    SESSION_COOKIE_NAME,
-    await createSessionToken({
-      id: String(user._id),
-      name: user.name,
-      email: user.email,
-      role: normalizeRole(user.role),
-    }),
-    getSessionCookieOptions(),
-  );
-
-  return response;
 }

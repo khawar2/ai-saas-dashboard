@@ -1,8 +1,7 @@
 ﻿import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
+import { SignupForm } from "@/components/auth/auth-forms";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 
 type RegisterPageProps = {
   searchParams: Promise<{ next?: string }>;
@@ -23,13 +22,7 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
           <Link href="/" className="text-sm font-semibold text-sky-300">Nexora AI</Link>
           <h1 className="mt-6 text-3xl font-semibold text-white">Create your workspace</h1>
           <p className="mt-2 text-sm text-slate-400">Start with a secure owner account and production-ready workspace.</p>
-          <form data-testid="signup-form" action="/api/auth/register" method="post" className="mt-8 space-y-4">
-            <input type="hidden" name="next" value={safeNext} />
-            <Input data-testid="signup-name" name="name" placeholder="Full name" autoComplete="name" required />
-            <Input data-testid="signup-email" name="email" type="email" placeholder="you@company.com" autoComplete="email" required />
-            <Input data-testid="signup-password" name="password" type="password" placeholder="Minimum 8 characters" autoComplete="new-password" minLength={8} required />
-            <Button data-testid="signup-submit" type="submit" className="w-full">Create account</Button>
-          </form>
+          <SignupForm nextPath={safeNext} />
           <p className="mt-6 text-center text-sm text-slate-400">
             Already have an account? <Link href="/login" className="text-sky-300 hover:text-sky-200">Sign in</Link>
           </p>

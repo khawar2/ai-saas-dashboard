@@ -1,8 +1,7 @@
 ﻿import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
+import { LoginForm } from "@/components/auth/auth-forms";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 
 type LoginPageProps = {
   searchParams: Promise<{ next?: string }>;
@@ -39,12 +38,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           <Link href="/" className="text-sm font-semibold text-sky-300">Nexora AI</Link>
           <h1 className="mt-6 text-3xl font-semibold text-white">Sign in</h1>
           <p className="mt-2 text-sm text-slate-400">Use your workspace account to continue.</p>
-          <form data-testid="login-form" action="/api/auth/login" method="post" className="mt-8 space-y-4">
-            <input type="hidden" name="next" value={safeNext} />
-            <Input data-testid="login-email" name="email" type="email" placeholder="you@company.com" autoComplete="email" required />
-            <Input data-testid="login-password" name="password" type="password" placeholder="Password" autoComplete="current-password" required />
-            <Button data-testid="login-submit" type="submit" className="w-full">Sign in</Button>
-          </form>
+          <LoginForm nextPath={safeNext} />
           <div className="mt-6 flex justify-between text-sm text-slate-400">
             <Link href="/forgot-password" className="hover:text-white">Forgot password?</Link>
             <Link href="/signup" className="hover:text-white">Create account</Link>
