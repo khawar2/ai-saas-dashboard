@@ -233,6 +233,14 @@ npm install
 npm run dev
 ```
 
+Run local development with a temporary in-memory MongoDB database:
+
+```bash
+npm run dev:local
+```
+
+Use `dev:local` when you want signup/login to work without installing MongoDB or configuring MongoDB Atlas. Data resets when the process stops.
+
 ---
 
 ## Run Quality Checks
@@ -259,6 +267,14 @@ Run the full suite:
 ```bash
 npm run test:e2e
 ```
+
+Run the complete local authenticated flow without Docker or a local MongoDB install:
+
+```bash
+npm run test:e2e:local
+```
+
+This starts an isolated in-memory MongoDB instance, injects test-only auth/admin credentials, starts Next.js on `http://localhost:3100`, and runs the suite serially for reliability.
 
 Run with the Playwright UI:
 

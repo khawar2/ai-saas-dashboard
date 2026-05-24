@@ -16,7 +16,7 @@ export function Alert({
 }) {
   return (
     <div
-      className={cn("rounded-2xl border px-4 py-3 text-sm", variants[variant], className)}
+      className={cn("rounded-2xl border px-4 py-3 text-sm shadow-lg shadow-slate-950/10 backdrop-blur", variants[variant], className)}
       {...props}
     />
   );

@@ -19,16 +19,17 @@ export default async function BillingPage() {
 
   return (
     <section data-testid="billing-page" className="space-y-8">
-      <Card className="p-6 sm:p-8">
+      <Card className="relative overflow-hidden p-6 sm:p-8">
+        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-sky-300/10 blur-3xl" />
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-          <div>
+          <div className="relative">
             <p className="text-sm font-medium text-sky-300">Billing</p>
-            <h2 className="mt-2 text-4xl font-semibold tracking-tight text-white">Plans and subscription</h2>
+            <h2 className="mt-2 text-4xl font-semibold tracking-[-0.05em] text-white">Plans and subscription</h2>
             <p className="mt-3 max-w-2xl text-slate-400">
               Manage your Stripe subscription, plan limits, cancellation status, and usage allowance.
             </p>
           </div>
-          <div className="rounded-2xl bg-sky-400 p-5 text-slate-950">
+          <div className="relative rounded-3xl bg-gradient-to-br from-sky-300 via-cyan-300 to-emerald-300 p-5 text-slate-950 shadow-xl shadow-sky-950/20">
             <p className="text-sm font-medium">Current plan</p>
             <p className="mt-2 text-3xl font-semibold capitalize">{currentPlan}</p>
             <p className="mt-2 text-sm">
@@ -41,7 +42,8 @@ export default async function BillingPage() {
       </Card>
       <div data-testid="billing-plans" className="grid gap-4 lg:grid-cols-2">
         {plans.map((plan) => (
-          <Card key={plan.id} className={plan.id === currentPlan ? "p-6 ring-2 ring-sky-300/50" : "p-6"}>
+          <Card key={plan.id} className={plan.id === currentPlan ? "relative overflow-hidden p-6 ring-2 ring-sky-300/50" : "p-6"}>
+            {plan.id === currentPlan ? <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-sky-200 to-transparent" /> : null}
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold text-white">{plan.name}</h2>
               {plan.id === currentPlan ? <StatusPill className="bg-sky-400 text-slate-950">Current</StatusPill> : null}
@@ -59,7 +61,7 @@ export default async function BillingPage() {
             {plan.id === "pro" && currentPlan !== "pro" ? (
               <form action="/api/billing/checkout" method="post" className="mt-6">
                 <input type="hidden" name="plan" value="pro" />
-                <button data-testid="upgrade-pro-button" className="w-full rounded-full bg-white px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-100">
+                <button data-testid="upgrade-pro-button" className="w-full rounded-full bg-gradient-to-r from-sky-300 to-emerald-300 px-4 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-sky-950/20 transition hover:-translate-y-0.5">
                   Upgrade to Pro
                 </button>
               </form>

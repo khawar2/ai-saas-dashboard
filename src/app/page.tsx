@@ -25,9 +25,9 @@ const features = [
 ];
 
 const metrics = [
-  { label: "Automations", value: "42K+" },
-  { label: "Median response", value: "1.8s" },
-  { label: "Uptime target", value: "99.9%" },
+  { label: "Automations", value: "42K+", delta: "+18%" },
+  { label: "Median response", value: "1.8s", delta: "-34%" },
+  { label: "Uptime target", value: "99.9%", delta: "SLA" },
 ];
 
 const pricing = [
@@ -37,15 +37,17 @@ const pricing = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-hidden">
+    <main className="relative min-h-screen overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 premium-grid opacity-50" />
+      <div className="pointer-events-none absolute left-1/2 top-0 h-[34rem] w-[34rem] -translate-x-1/2 rounded-full bg-sky-400/10 blur-3xl" />
       <SiteHeader />
-      <section data-testid="landing-hero" className="mx-auto flex w-full max-w-7xl flex-col gap-16 px-6 py-16 sm:py-24 lg:flex-row lg:items-center lg:px-8">
+      <section data-testid="landing-hero" className="relative mx-auto flex w-full max-w-7xl flex-col gap-16 px-6 py-16 sm:py-24 lg:flex-row lg:items-center lg:px-8">
         <div className="max-w-3xl">
           <Badge>Production AI SaaS Starter</Badge>
-          <h1 className="mt-6 text-5xl font-semibold tracking-tight text-white sm:text-7xl lg:text-8xl">
-            Launch a premium AI SaaS in less time.
+          <h1 className="mt-6 text-5xl font-semibold tracking-[-0.07em] text-white sm:text-7xl lg:text-8xl">
+            Launch a premium AI SaaS control center.
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300/90">
             Nexora AI gives you a clean frontend system for landing pages, auth,
             dashboard workflows, AI chat, billing, admin, and settings with a polished
             responsive interface.
@@ -53,41 +55,45 @@ export default function Home() {
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/signup"
-              className="rounded-full bg-sky-400 px-6 py-3 text-center text-sm font-semibold text-slate-950 shadow-lg shadow-sky-500/20 transition hover:bg-sky-300"
+              className="rounded-full bg-gradient-to-r from-sky-300 via-cyan-300 to-emerald-300 px-6 py-3 text-center text-sm font-semibold text-slate-950 shadow-lg shadow-sky-500/20 transition hover:-translate-y-0.5"
             >
               Start free trial
             </Link>
             <Link
               href="#features"
-              className="rounded-full border border-white/15 px-6 py-3 text-center text-sm font-semibold text-white transition hover:border-sky-300/60 hover:bg-white/10"
+              className="rounded-full border border-white/15 bg-white/[0.03] px-6 py-3 text-center text-sm font-semibold text-white backdrop-blur transition hover:border-sky-300/60 hover:bg-white/10"
             >
               Explore features
             </Link>
           </div>
           <div className="mt-10 grid gap-4 sm:grid-cols-3">
             {metrics.map((metric) => (
-              <div key={metric.label} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                <div className="text-2xl font-semibold text-white">{metric.value}</div>
+              <div key={metric.label} className="rounded-3xl border border-white/10 bg-white/[0.05] p-4 shadow-2xl shadow-slate-950/10 backdrop-blur">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="text-2xl font-semibold text-white">{metric.value}</div>
+                  <span className="rounded-full bg-emerald-300/10 px-2.5 py-1 text-xs font-semibold text-emerald-200">{metric.delta}</span>
+                </div>
                 <div className="mt-1 text-sm text-slate-400">{metric.label}</div>
               </div>
             ))}
           </div>
         </div>
-        <Card className="relative flex-1 p-3 shadow-2xl shadow-sky-950/40 sm:p-4">
+        <Card className="relative flex-1 overflow-hidden p-3 shadow-2xl shadow-sky-950/40 sm:p-4">
+          <div className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-sky-300/80 to-transparent" />
           <div className="rounded-3xl border border-white/10 bg-slate-950/90 p-5">
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
               <div>
                 <p className="text-sm text-slate-400">Workspace</p>
                 <h2 className="text-xl font-semibold text-white">AI Operations</h2>
               </div>
-              <span className="rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-300">
+              <span className="rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-300 ring-1 ring-emerald-300/20">
                 Live
               </span>
             </div>
             <div className="mt-5 space-y-3">
               {features.map((feature) => (
-                <div key={feature.title} className="flex items-start gap-3 rounded-2xl bg-white/[0.04] p-4">
-                  <span className="h-2.5 w-2.5 rounded-full bg-sky-300" />
+                <div key={feature.title} className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                  <span className="mt-1 h-2.5 w-2.5 rounded-full bg-sky-300 shadow-lg shadow-sky-300/40" />
                   <span>
                     <span className="block text-sm font-semibold text-white">{feature.title}</span>
                     <span className="mt-1 block text-sm text-slate-400">{feature.description}</span>
@@ -95,14 +101,14 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <div className="mt-5 rounded-2xl bg-sky-400 p-5 text-slate-950">
+            <div className="mt-5 rounded-2xl bg-gradient-to-br from-sky-300 via-cyan-300 to-emerald-300 p-5 text-slate-950 shadow-xl shadow-sky-950/20">
               <p className="text-sm font-medium">Next action</p>
               <p className="mt-2 text-2xl font-semibold">Connect your AI provider and billing secrets.</p>
             </div>
           </div>
         </Card>
       </section>
-      <section id="features" data-testid="landing-features" className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+      <section id="features" data-testid="landing-features" className="relative mx-auto max-w-7xl px-6 py-20 lg:px-8">
         <SectionHeading
           eyebrow="Features"
           title="Everything a serious AI SaaS frontend needs"
@@ -110,8 +116,8 @@ export default function Home() {
         />
         <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {features.map((feature) => (
-            <Card key={feature.title} className="p-6">
-              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-sky-400/15 text-lg font-bold text-sky-300">
+            <Card key={feature.title} className="group p-6 transition duration-200 hover:-translate-y-1 hover:border-sky-300/30">
+              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-sky-400/15 text-lg font-bold text-sky-300 transition group-hover:bg-sky-300 group-hover:text-slate-950">
                 {feature.title.charAt(0)}
               </div>
               <h3 className="mt-6 text-lg font-semibold text-white">{feature.title}</h3>
@@ -130,8 +136,8 @@ export default function Home() {
           />
           <Card className="grid gap-4 p-6 sm:grid-cols-2">
             {["Responsive layouts", "Reusable components", "Protected app shell", "Env-based secrets"].map((item) => (
-              <div key={item} className="rounded-2xl bg-white/[0.04] p-5">
-                <div className="h-2 w-12 rounded-full bg-sky-300" />
+              <div key={item} className="rounded-3xl border border-white/10 bg-white/[0.04] p-5">
+                <div className="h-2 w-12 rounded-full bg-gradient-to-r from-sky-300 to-emerald-300" />
                 <p className="mt-5 font-semibold text-white">{item}</p>
                 <p className="mt-2 text-sm text-slate-400">Designed to stay simple while supporting real SaaS implementation work.</p>
               </div>
@@ -145,9 +151,10 @@ export default function Home() {
           title="Simple plans for every stage"
           description="Use these responsive pricing cards as the public billing entry point before wiring Stripe checkout."
         />
-        <div className="mt-12 grid gap-4 lg:grid-cols-3">
+        <div className="mt-12 grid gap-4 lg:grid-cols-2">
           {pricing.map((plan) => (
-            <Card key={plan.name} className={plan.featured ? "p-6 ring-2 ring-sky-300/50" : "p-6"}>
+            <Card key={plan.name} className={plan.featured ? "relative overflow-hidden p-6 ring-2 ring-sky-300/50" : "p-6"}>
+              {plan.featured ? <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-sky-200 to-transparent" /> : null}
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-semibold text-white">{plan.name}</h3>
                 {plan.featured ? <span className="rounded-full bg-sky-400 px-3 py-1 text-xs font-bold text-slate-950">Popular</span> : null}
@@ -164,7 +171,7 @@ export default function Home() {
               </ul>
               <Link
                 href="/signup"
-                className="mt-8 block rounded-full bg-white px-5 py-3 text-center text-sm font-semibold text-slate-950 transition hover:bg-sky-100"
+                className={plan.featured ? "mt-8 block rounded-full bg-gradient-to-r from-sky-300 to-emerald-300 px-5 py-3 text-center text-sm font-semibold text-slate-950 transition hover:-translate-y-0.5" : "mt-8 block rounded-full bg-white px-5 py-3 text-center text-sm font-semibold text-slate-950 transition hover:bg-sky-100"}
               >
                 Choose {plan.name}
               </Link>

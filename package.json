@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:local": "node scripts/dev-with-memory-mongo.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "check": "npm run lint && npm run typecheck",
     "test:e2e": "playwright test",
+    "test:e2e:local": "node scripts/e2e-with-memory-mongo.mjs playwright test --workers=1",
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
@@ -30,6 +32,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
+    "mongodb-memory-server": "^11.1.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

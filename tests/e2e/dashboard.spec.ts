@@ -13,7 +13,7 @@ test.describe("Dashboard", () => {
     await expect(page.getByTestId("dashboard-page")).toBeVisible();
     await expect(page.getByTestId("usage-cards")).toBeVisible();
     await expect(page.getByTestId("plan-limits")).toBeVisible();
-    await expect(page.getByText(/remaining/i)).toBeVisible();
+    await expect(page.getByText("Remaining credits", { exact: true })).toBeVisible();
   });
 
   test("can display an upgrade message when usage limit is reached", async ({ page }) => {
@@ -33,6 +33,6 @@ test.describe("Dashboard", () => {
     await page.getByTestId("chat-input").fill("Trigger limit");
     await page.getByTestId("chat-send").click();
 
-    await expect(page.getByText(/upgrade your plan/i)).toBeVisible();
+    await expect(page.getByTestId("chat-panel").getByText(/upgrade your plan/i).last()).toBeVisible();
   });
 });

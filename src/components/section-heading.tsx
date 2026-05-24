@@ -16,10 +16,10 @@ export function SectionHeading({
   return (
     <div className={align === "center" ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}>
       <Badge>{eyebrow}</Badge>
-      <h2 className="mt-5 text-3xl font-semibold tracking-tight text-white sm:text-5xl">
+      <h2 className="mt-5 text-3xl font-semibold tracking-[-0.04em] text-white sm:text-5xl">
         {title}
       </h2>
-      <p className="mt-4 text-base leading-7 text-slate-400 sm:text-lg">{description}</p>
+      <p className="mt-4 text-base leading-7 text-slate-300/80 sm:text-lg">{description}</p>
     </div>
   );
 }

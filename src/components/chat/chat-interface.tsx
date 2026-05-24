@@ -196,11 +196,12 @@ export function ChatInterface() {
 
   return (
     <section data-testid="chat-page" className="grid min-h-[calc(100vh-8rem)] gap-6 xl:grid-cols-[1fr_22rem]">
-      <Card data-testid="chat-panel" className="flex min-h-[38rem] flex-col p-4 sm:p-5">
+      <Card data-testid="chat-panel" className="relative flex min-h-[38rem] flex-col overflow-hidden p-4 sm:p-5">
+        <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-sky-300/70 to-transparent" />
         <div className="flex flex-col gap-4 border-b border-white/10 pb-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm font-medium text-sky-300">Assistant workspace</p>
-            <h2 className="mt-1 text-2xl font-semibold text-white">
+            <h2 className="mt-1 text-2xl font-semibold tracking-[-0.03em] text-white">
               {selectedConversation?.title ?? "New conversation"}
             </h2>
           </div>
@@ -213,7 +214,7 @@ export function ChatInterface() {
               setUpgradeHref(null);
             }}
             data-testid="new-conversation-button"
-            className="w-fit rounded-full border border-white/10 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-sky-300/60 hover:bg-white/10"
+            className="w-fit rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-sky-300/60 hover:bg-white/10"
           >
             New conversation
           </button>
@@ -253,10 +254,10 @@ export function ChatInterface() {
               <div
                 className={
                   message.role === "user"
-                    ? "rounded-3xl bg-sky-400 p-4 text-slate-950"
+                    ? "rounded-3xl bg-gradient-to-br from-sky-300 to-cyan-300 p-4 text-slate-950 shadow-lg shadow-sky-950/20"
                     : message.status === "failed"
                       ? "rounded-3xl border border-red-400/20 bg-red-500/10 p-4 text-red-100"
-                      : "rounded-3xl bg-white/[0.06] p-4 text-slate-200"
+                      : "rounded-3xl border border-white/10 bg-white/[0.06] p-4 text-slate-200"
                 }
               >
                 <p className="whitespace-pre-wrap text-sm leading-6">{message.content}</p>
@@ -278,7 +279,7 @@ export function ChatInterface() {
             value={input}
             onChange={(event) => setInput(event.target.value)}
             placeholder="Ask your AI assistant..."
-            className="min-h-14 flex-1 resize-none rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-sky-300/60"
+            className="min-h-14 flex-1 resize-none rounded-3xl border border-white/10 bg-white/[0.05] px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 shadow-inner shadow-slate-950/20 transition focus:border-sky-300/60 focus:ring-4 focus:ring-sky-300/10"
             disabled={isSending}
             required
           />
@@ -305,8 +306,8 @@ export function ChatInterface() {
                 onClick={() => setSelectedConversationId(conversation.id)}
                 className={
                   conversation.id === selectedConversationId
-                    ? "rounded-2xl bg-sky-400 px-4 py-3 text-left text-sm font-semibold text-slate-950"
-                    : "rounded-2xl bg-white/[0.04] px-4 py-3 text-left text-sm text-slate-300 transition hover:bg-white/10 hover:text-white"
+                    ? "rounded-2xl bg-white px-4 py-3 text-left text-sm font-semibold text-slate-950 shadow-lg shadow-sky-950/20"
+                    : "rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-left text-sm text-slate-300 transition hover:bg-white/10 hover:text-white"
                 }
               >
                 <span className="block truncate">{conversation.title}</span>
@@ -325,7 +326,7 @@ export function ChatInterface() {
                 type="button"
                 onClick={() => void sendMessage(undefined, prompt)}
                 disabled={isSending}
-                className="rounded-2xl bg-white/[0.04] px-4 py-3 text-left text-sm text-slate-300 transition hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
+                className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-left text-sm text-slate-300 transition hover:border-sky-300/40 hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {prompt}
               </button>

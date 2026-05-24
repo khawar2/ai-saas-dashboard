@@ -9,6 +9,7 @@ test.describe("AI chat", () => {
 
   test("loads chat page and sends a message with a mocked AI response", async ({ page }) => {
     await page.route("**/api/chat", async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 300));
       await route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -49,7 +50,7 @@ test.describe("AI chat", () => {
     await page.getByTestId("chat-input").fill("Fail gracefully");
     await page.getByTestId("chat-send").click();
 
-    await expect(page.getByText(/ai provider request failed/i)).toBeVisible();
+    await expect(page.getByTestId("chat-panel").getByText(/ai provider request failed/i).last()).toBeVisible();
   });
 
   test("loads chat history and continues a previous conversation", async ({ page }) => {
@@ -101,7 +102,7 @@ test.describe("AI chat", () => {
 
     await page.goto("/chat");
     await expect(page.getByTestId("chat-history")).toContainText("Previous conversation");
-    await page.getByText("Previous conversation").click();
+    await page.getByTestId("chat-history").getByRole("button", { name: /previous conversation/i }).click();
     await expect(page.getByText("Earlier answer")).toBeVisible();
   });
 

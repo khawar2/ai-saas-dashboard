@@ -103,15 +103,19 @@ export function DocumentUploadPanel() {
 
   return (
     <section data-testid="documents-page" className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
-      <Card data-testid="document-upload-card" className="p-6">
+      <Card data-testid="document-upload-card" className="relative overflow-hidden p-6">
+        <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-sky-300/10 blur-3xl" />
+        <div className="relative">
         <p className="text-sm font-medium text-sky-300">Document upload</p>
-        <h2 className="mt-2 text-3xl font-semibold tracking-tight text-white">Prepare files for AI Q&A</h2>
+        <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-white">Prepare files for AI Q&A</h2>
         <p className="mt-3 text-sm leading-6 text-slate-400">
           Upload PDF, TXT, or Markdown files. Files are stored outside the public directory and extracted text is saved for future retrieval workflows.
         </p>
+        </div>
 
         <form data-testid="document-upload-form" onSubmit={handleSubmit} className="mt-6 space-y-4">
-          <label className="flex min-h-44 cursor-pointer flex-col items-center justify-center rounded-3xl border border-dashed border-white/20 bg-white/[0.04] p-6 text-center transition hover:border-sky-300/60 hover:bg-white/[0.07]">
+          <label className="flex min-h-44 cursor-pointer flex-col items-center justify-center rounded-3xl border border-dashed border-white/20 bg-white/[0.04] p-6 text-center shadow-inner shadow-slate-950/20 transition hover:border-sky-300/60 hover:bg-white/[0.07]">
+            <span className="mb-4 grid h-12 w-12 place-items-center rounded-2xl bg-sky-300/10 text-sky-200">PDF</span>
             <span className="text-lg font-semibold text-white">Choose a document</span>
             <span className="mt-2 text-sm text-slate-400">PDF, TXT, or Markdown up to 10MB</span>
             <input
@@ -157,7 +161,7 @@ export function DocumentUploadPanel() {
 
         <div className="divide-y divide-white/10">
           {documents.map((document) => (
-            <article key={document.id} className="p-5">
+            <article key={document.id} className="p-5 transition hover:bg-white/[0.03]">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <h4 className="font-semibold text-white">{document.originalName}</h4>

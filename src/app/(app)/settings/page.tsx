@@ -5,13 +5,13 @@ import { Input } from "@/components/ui/input";
 export default function SettingsPage() {
   return (
     <section data-testid="settings-page" className="space-y-8">
-      <div>
+      <div className="rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.03] p-6 shadow-2xl shadow-slate-950/20 sm:p-8">
         <p className="text-sm font-medium text-sky-300">Settings</p>
-        <h2 className="mt-2 text-4xl font-semibold tracking-tight text-white">Workspace settings</h2>
+        <h2 className="mt-2 text-4xl font-semibold tracking-[-0.05em] text-white">Workspace settings</h2>
         <p className="mt-3 max-w-2xl text-slate-400">Configure profile, organization defaults, notification rules, and security preferences.</p>
       </div>
       <div className="grid gap-6 xl:grid-cols-[1fr_22rem]">
-        <Card className="p-6">
+        <Card className="p-6 sm:p-8">
           <form data-testid="settings-form" className="space-y-5">
             <label className="block text-sm font-medium text-slate-300">
               Workspace name
@@ -34,7 +34,7 @@ export default function SettingsPage() {
         </Card>
         <div className="space-y-4">
           {["Two-factor authentication", "Audit logging", "Weekly usage reports"].map((item) => (
-            <Card key={item} className="p-5">
+            <Card key={item} className="p-5 transition hover:-translate-y-1 hover:border-emerald-300/30">
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <h3 className="font-semibold text-white">{item}</h3>

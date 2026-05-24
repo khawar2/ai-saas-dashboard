@@ -31,16 +31,30 @@ export default async function DashboardPage() {
   return (
     <section data-testid="dashboard-page" className="space-y-8">
       <div className="grid gap-6 lg:grid-cols-[1fr_22rem]">
-        <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-sky-400/20 via-white/[0.06] to-transparent p-6 sm:p-8">
+        <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-sky-400/20 via-white/[0.07] to-emerald-400/10 p-6 shadow-2xl shadow-slate-950/20 sm:p-8">
+          <div className="absolute right-6 top-6 hidden rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-xs font-semibold text-slate-200 backdrop-blur sm:block">
+            AI operations live
+          </div>
+          <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-sky-300/20 blur-3xl" />
+          <div className="relative">
           <p className="text-sm font-medium text-sky-300">Workspace overview</p>
-          <h2 className="mt-3 text-4xl font-semibold tracking-tight text-white">
+          <h2 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-white sm:text-5xl">
             Good morning, {sessionUser?.name ?? "there"}.
           </h2>
           <p className="mt-3 max-w-2xl text-slate-300">
             Monitor usage, remaining credits, plan limits, billing health, and AI activity from one clean surface.
           </p>
+          <div className="mt-8 grid gap-3 sm:grid-cols-3">
+            {["Usage tracked", "Billing synced", "Roles enforced"].map((item) => (
+              <div key={item} className="rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-3 text-sm font-medium text-slate-200">
+                {item}
+              </div>
+            ))}
+          </div>
+          </div>
         </div>
-        <Card className="p-6">
+        <Card className="relative overflow-hidden p-6">
+          <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-emerald-300/70 to-transparent" />
           <p className="text-sm text-slate-400">Current plan</p>
           <p className="mt-3 text-3xl font-semibold capitalize text-white">{planName}</p>
           <Progress value={tokenPercent} className="mt-5 h-2" />
@@ -88,7 +102,10 @@ export default async function DashboardPage() {
       </div>
       <div className="grid gap-6 xl:grid-cols-[1fr_24rem]">
         <Card data-testid="plan-limits" className="p-6">
-          <h2 className="text-xl font-semibold text-white">Plan limits</h2>
+          <div className="flex items-center justify-between gap-4">
+            <h2 className="text-xl font-semibold text-white">Plan limits</h2>
+            <span className="rounded-full bg-sky-300/10 px-3 py-1 text-xs font-semibold text-sky-200">Monthly</span>
+          </div>
           <div className="mt-6 space-y-6">
             <div>
               <div className="flex justify-between text-sm">

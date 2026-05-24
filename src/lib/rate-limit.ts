@@ -18,6 +18,10 @@ export function checkRateLimit(
     windowMs: number;
   },
 ) {
+  if (process.env.DISABLE_RATE_LIMITS === "true") {
+    return { ok: true as const };
+  }
+
   const now = Date.now();
   const bucketKey = `${options.key}:${getClientIp(request)}`;
 

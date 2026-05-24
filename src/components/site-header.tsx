@@ -9,29 +9,29 @@ const navItems = [
 
 export function SiteHeader() {
   return (
-    <header data-testid="site-header" className="sticky top-0 z-30 border-b border-white/10 bg-slate-950/75 backdrop-blur-xl">
+    <header data-testid="site-header" className="sticky top-0 z-30 border-b border-white/10 bg-slate-950/70 shadow-2xl shadow-slate-950/10 backdrop-blur-2xl">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
         <Link href="/" className="flex items-center gap-3 text-lg font-semibold text-white">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-sky-400 text-sm font-black text-slate-950">
+          <span className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-sky-300 to-emerald-300 text-sm font-black text-slate-950 shadow-lg shadow-sky-500/20">
             N
           </span>
           Nexora AI
         </Link>
-        <div className="hidden items-center gap-7 text-sm font-medium text-slate-300 md:flex">
+        <div className="hidden items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] p-1 text-sm font-medium text-slate-300 md:flex">
           {navItems.map((item) => (
-            <Link key={item.href} href={item.href} className="transition hover:text-white">
+            <Link key={item.href} href={item.href} className="rounded-full px-4 py-2 transition hover:bg-white/10 hover:text-white">
               {item.label}
             </Link>
           ))}
         </div>
         <div className="flex items-center gap-2">
-          <Link data-testid="login-link" href="/login" className="hidden text-sm font-medium text-slate-300 hover:text-white sm:block">
+          <Link data-testid="login-link" href="/login" className="text-sm font-medium text-slate-300 transition hover:text-white">
             Sign in
           </Link>
           <Link
             href="/signup"
             data-testid="signup-link"
-            className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-sky-100"
+            className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-950 shadow-lg shadow-sky-950/20 transition hover:-translate-y-0.5 hover:bg-sky-100"
           >
             Get started
           </Link>
